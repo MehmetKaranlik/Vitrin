@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -11,6 +12,7 @@ import 'package:vitrinint/api/api_util.dart';
 import 'package:vitrinint/controllers/AddressController.dart';
 import 'package:vitrinint/controllers/HomeController.dart';
 import 'package:vitrinint/controllers/StoryController.dart';
+import 'package:vitrinint/controllers/story_index_controller.dart';
 import 'package:vitrinint/models/AdBanner.dart';
 import 'package:vitrinint/models/Category.dart';
 import 'package:vitrinint/models/MyResponse.dart';
@@ -156,29 +158,32 @@ class _StoryScreenState extends State<StoryScreen> {
           scaffoldMessengerKey: _scaffoldMessengerKey,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
-          home: Scaffold(
-              key: _scaffoldKey,
-              backgroundColor: Colors.black.withOpacity(0.9),
-              body: RefreshIndicator(
-                onRefresh: _refresh,
-                backgroundColor: customAppTheme.bgLayer1,
-                color: themeData.colorScheme.primary,
-                key: _refreshIndicatorKey,
-                child: Column(
-                  children: [
-                    Container(
-                      child: isInProgress
-                          ? LinearProgressIndicator(
-                              minHeight: MySize.size3,
-                            )
-                          : Container(),
-                    ),
-                    Expanded(
-                      child: _buildBody(),
-                    )
-                  ],
-                ),
-              )),
+          home: SafeArea(
+            top: true,
+            child: Scaffold(
+                key: _scaffoldKey,
+                backgroundColor: Colors.black.withOpacity(0.9),
+                body: RefreshIndicator(
+                  onRefresh: _refresh,
+                  backgroundColor: customAppTheme.bgLayer1,
+                  color: themeData.colorScheme.primary,
+                  key: _refreshIndicatorKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        child: isInProgress
+                            ? LinearProgressIndicator(
+                                minHeight: MySize.size3,
+                              )
+                            : Container(),
+                      ),
+                      Expanded(
+                        child: _buildBody(),
+                      )
+                    ],
+                  ),
+                )),
+          ),
         );
       },
     );
@@ -198,27 +203,7 @@ class _StoryScreenState extends State<StoryScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 1.w),
                 child: Container(
-                    height: 0.5.h,
-                    width: 100.w,
-                    child: ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: 0.4.w,
-                      ),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: stories!.length,
-                      itemBuilder: (context, index) {
-                        return Ink(
-                          height: 1.h,
-                          width: width.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[400],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(0.1.w))),
-                        );
-                      },
-                    )),
+                    height: 0.5.h, width: 100.w, child: _buildPageIndex(width)),
               ),
             ),
             _buildExitButton(),
@@ -231,6 +216,32 @@ class _StoryScreenState extends State<StoryScreen> {
     } else {
       return Container();
     }
+  }
+
+  IndexController _indexController = IndexController();
+  ListView _buildPageIndex(double width) {
+    return ListView.separated(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      separatorBuilder: (context, index) => SizedBox(
+        width: 0.4.w,
+      ),
+      scrollDirection: Axis.horizontal,
+      itemCount: stories!.length,
+      itemBuilder: (context, index) {
+        return Obx(() {
+          return Ink(
+            height: 1.h,
+            width: width.w,
+            decoration: BoxDecoration(
+                color: _indexController.currentIndex == index
+                    ? Colors.white
+                    : Colors.grey,
+                borderRadius: BorderRadius.all(Radius.circular(0.1.w))),
+          );
+        });
+      },
+    );
   }
 
   Positioned _buildGoToShopButton() {
@@ -292,11 +303,50 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   _storiesWidget(List<Stories> stories) {
-    return Container(
-      decoration:
-          BoxDecoration(border: Border.all(width: 0.2.w, color: Colors.white)),
-      padding: EdgeInsets.symmetric(horizontal: 1.w),
-      child: PhotoViewGallery.builder(
+    return GestureDetector(
+      onTap: () {},
+      onVerticalDragUpdate: (details) {
+        print(details.delta.distance);
+        if (details.delta.distance > 10) {
+          print('sa');
+          Navigator.of(context).pop();
+        }
+      },
+      child: Container(
+        width: 100.w,
+        height: 100.h,
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.2.w, color: Colors.white),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 1.w),
+        child: CarouselSlider.builder(
+          itemCount: stories.length,
+          itemBuilder: (context, index, realIndex) {
+            return Image.network(
+              stories[index].storyImage,
+              fit: BoxFit.contain,
+            );
+          },
+          options: CarouselOptions(
+              pauseAutoPlayOnManualNavigate: false,
+              onPageChanged: (_, __) {
+                _indexController.currentIndex++;
+              },
+              height: 80.h,
+              autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+              enableInfiniteScroll: false,
+              autoPlayAnimationDuration: Duration(seconds: 2),
+              autoPlayInterval: Duration(seconds: 12),
+              autoPlay: true,
+              pageSnapping: false,
+              viewportFraction: 1),
+        ),
+      ),
+    );
+
+    /*(
+        onPageChanged: ()=>  _currentPage++,
+        pageController: _pageController,
         gaplessPlayback: true,
         enableRotation: true,
         customSize: Size.fromHeight(80.h),
@@ -324,7 +374,6 @@ class _StoryScreenState extends State<StoryScreen> {
             ),
           ),
         ),
-      ),
-    );
+      ),*/
   }
 }

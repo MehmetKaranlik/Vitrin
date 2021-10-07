@@ -526,10 +526,16 @@ class _HomeScreenState extends State<HomeScreen> {
         storyList.add(
           InkWell(
             onTap: () async {
-              await showDialog(
-                  useRootNavigator: true,
+              print('test');
+              await showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  isScrollControlled: true,
                   context: context,
-                  builder: (_) => StoryScreen(shopId: story.shopId));
+                  builder: (_) {
+                    return StoryScreen(shopId: story.shopId);
+                  });
             },
             child: _singleStory(story),
           ),
