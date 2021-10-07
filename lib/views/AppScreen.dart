@@ -1,5 +1,6 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:sizer/sizer.dart';
 import 'package:vitrinint/AppTheme.dart';
 import 'package:vitrinint/AppThemeNotifier.dart';
 import 'package:vitrinint/api/api_util.dart';
@@ -15,6 +16,8 @@ import 'package:vitrinint/views/auth/SettingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+
+import 'addresses/HomeFilterScreen.dart';
 
 class AppScreen extends StatefulWidget {
   final int selectedPage;
@@ -81,10 +84,11 @@ class _AppScreenState extends State<AppScreen>
           debugShowCheckedModeBanner: false,
           theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
           home: Scaffold(
-            backgroundColor: customAppTheme.bgLayer1,
-            bottomNavigationBar: _build,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: _buildFloatingActionButton(),
+            backgroundColor: customAppTheme.bgLayer1,
+            bottomNavigationBar: _buildAnimatedButtomNavigationBar(context),
             body: TabBarView(
               controller: _tabController,
               children: _buildBottomBarItems(),
@@ -95,7 +99,30 @@ class _AppScreenState extends State<AppScreen>
     );
   }
 
-  SafeArea _buildButtomNavigationBar() {
+  _buildFloatingActionButton() {
+    return SizedBox(
+      width: 15.w,
+      height: 15.w,
+      child: Material(
+        child: FloatingActionButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => HomeFilterScreen())),
+          child: Icon(
+            Icons.location_on_outlined,
+            size: 6.5.w,
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<IconData> listBottomNavigationBarIcons = [
+    MdiIcons.store,
+    MdiIcons.magnify,
+    MdiIcons.heart,
+    MdiIcons.account,
+  ];
+/*  SafeArea _buildButtomNavigationBar() {
     return SafeArea(
       child: BottomAppBar(
           elevation: 0,
@@ -243,7 +270,7 @@ class _AppScreenState extends State<AppScreen>
             ),
           )),
     );
-  }
+  }*/
 
   List<Widget> _buildBottomBarItems() {
     return <Widget>[
@@ -270,22 +297,32 @@ class _AppScreenState extends State<AppScreen>
     );
   }
 
-  _buildNavigationBar(BuildContext context) {
+  _buildAnimatedButtomNavigationBar(BuildContext context) {
+    List<Widget> navigationBarIcons = [];
     return AnimatedBottomNavigationBar.builder(
         itemCount: _tabController!.length,
         tabBuilder: (int index, bool isActive) {
-          final color = isActive ? Colors.white : Colors.white.withOpacity(0.4);
-          return _buildBottomBarItems();
+          final color = isActive ? Colors.black : Colors.black.withOpacity(0.4);
+          return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  listBottomNavigationBarIcons[index],
+                  size: 24,
+                  color: color,
+                )
+              ]);
         },
         backgroundColor: themeData.bottomNavigationBarTheme.backgroundColor,
+        elevation: 70,
         activeIndex: _tabController!.index,
         splashColor: Colors.transparent,
         splashSpeedInMilliseconds: 300,
         notchSmoothness: NotchSmoothness.defaultEdge,
         gapLocation: GapLocation.center,
         leftCornerRadius: 0,
-        notchMargin: -20,
         rightCornerRadius: 0,
-        onTap: (index) => controller.selectedIndex = index);
+        onTap: (index) => _tabController!.index = index);
   }
 }

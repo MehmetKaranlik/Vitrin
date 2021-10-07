@@ -250,25 +250,17 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildAdBannerSlider(imageSliders),
 
             /*_addressWidget(),*/
-            _filterWidget(),
-            SizedPlaceHolder(color: Colors.transparent, height: 2.h, width: 0),
+            //  _filterWidget(),
+            SizedPlaceHolder(color: Colors.transparent, height: 0.h, width: 0),
+            Divider(
+              thickness: 1,
+            ),
             _storiesWidget(stories!),
+            Divider(
+              thickness: 1,
+            ),
             _shopsWidget(shops!),
           ],
-        ),
-        Positioned(
-          left: 40.w,
-          bottom: -5.h,
-          child: SizedBox(
-            width: 14.w,
-            child: FloatingActionButton(
-              onPressed: () => "",
-              child: Icon(
-                Icons.location_on_outlined,
-                size: 6.5.w,
-              ),
-            ),
-          ),
         ),
       ]);
     } else if (isInProgress) {
@@ -297,14 +289,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       margin: EdgeInsets.fromLTRB(1.w, 2.w, 1.w, 0),
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Placeholder()
-
-          /* Image.network(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        child: Image.network(
           TextUtils.getImageUrl(item.url),
           fit: BoxFit.fill,
-        ),*/
-          ),
+        ),
+      ),
     );
   }
 
@@ -537,6 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
           InkWell(
             onTap: () async {
               await showDialog(
+                  useRootNavigator: true,
                   context: context,
                   builder: (_) => StoryScreen(shopId: story.shopId));
             },
@@ -552,6 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 8.h,
       width: 100.w,
       child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: 1.w),
         scrollDirection: Axis.horizontal,
         children: storyList,
         shrinkWrap: true,
@@ -576,7 +568,7 @@ class _HomeScreenState extends State<HomeScreen> {
               image: NetworkImage(
                 stories.storyImage,
               )),
-          border: Border.all(width: 1.w, color: Colors.orangeAccent),
+          border: Border.all(width: 0.5.w, color: Colors.blue[700]!),
           color: themeData.colorScheme.primary.withAlpha(20).withOpacity(0.3),
           shape: BoxShape.circle),
 

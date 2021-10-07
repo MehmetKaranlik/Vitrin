@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vitrinint/controllers/AppDataController.dart';
 import 'package:vitrinint/controllers/AuthController.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, AppThemeNotifier value, Widget? child) {
         return Sizer(
           builder: (context, orientation, deviceType) {
-            return MaterialApp(
+            return GetMaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
                 home: MyHomePage());

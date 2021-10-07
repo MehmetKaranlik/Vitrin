@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
@@ -156,7 +158,7 @@ class _StoryScreenState extends State<StoryScreen> {
           theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
           home: Scaffold(
               key: _scaffoldKey,
-              backgroundColor: Colors.black.withOpacity(0.3),
+              backgroundColor: Colors.black.withOpacity(0.9),
               body: RefreshIndicator(
                 onRefresh: _refresh,
                 backgroundColor: customAppTheme.bgLayer1,
@@ -184,31 +186,43 @@ class _StoryScreenState extends State<StoryScreen> {
 
   _buildBody() {
     if (stories != null) {
+      int storyCount = stories!.length;
+      int spaceCount = storyCount - 1;
+      double width = (98 - 0.4 * spaceCount) / storyCount;
       return Center(
         child: Stack(
           children: [
             _storiesWidget(stories!),
             Positioned(
-              right: 3.w,
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.close_rounded),
+              top: 7.h,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
+                child: Container(
+                    height: 0.5.h,
+                    width: 100.w,
+                    child: ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 0.4.w,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: stories!.length,
+                      itemBuilder: (context, index) {
+                        return Ink(
+                          height: 1.h,
+                          width: width.w,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(0.1.w))),
+                        );
+                      },
+                    )),
               ),
             ),
-            Positioned(
-              top: 8.h,
-              child: TextButton(
-                  style: themeData.textButtonTheme.style,
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => ShopScreen(
-                                shopId: stories![0].shopId,
-                              ))),
-                  child: Text(
-                    "MAC",
-                  )), // after implementation shop name will go here!
-            )
+            _buildExitButton(),
+            _buildGoToShopButton()
           ],
         ),
       );
@@ -217,6 +231,48 @@ class _StoryScreenState extends State<StoryScreen> {
     } else {
       return Container();
     }
+  }
+
+  Positioned _buildGoToShopButton() {
+    return Positioned(
+      top: 1.h,
+      left: 3.w,
+      child: Container(
+        alignment: Alignment.center,
+        height: 5.7.h,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              transform: GradientRotation(4),
+              colors: [Colors.white, Colors.white]),
+          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+        ),
+        child: TextButton(
+          onPressed: () => Get.off(() => ShopScreen(
+                shopId: stories![0].shopId,
+              )),
+          child: Text(
+            "Mağazaya Git",
+            style: TextStyle(
+                fontSize: 11.sp,
+                color: Colors.blue[700],
+                fontWeight: FontWeight.w700,
+                decoration: TextDecoration.underline),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned _buildExitButton() {
+    return Positioned(
+      right: 3.w,
+      child: IconButton(
+        onPressed: () => Navigator.pop(context),
+        icon: Icon(Icons.close_rounded),
+      ),
+    );
   }
 
   showMessage({String message = "Something wrong", Duration? duration}) {
@@ -236,9 +292,12 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   _storiesWidget(List<Stories> stories) {
-    return Padding(
+    return Container(
+      decoration:
+          BoxDecoration(border: Border.all(width: 0.2.w, color: Colors.white)),
       padding: EdgeInsets.symmetric(horizontal: 1.w),
       child: PhotoViewGallery.builder(
+        gaplessPlayback: true,
         enableRotation: true,
         customSize: Size.fromHeight(80.h),
         itemCount: stories.length,
