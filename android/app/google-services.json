@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1080899022878",
+    "project_id": "vitrinint-146e6",
+    "storage_bucket": "vitrinint-146e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080899022878:android:2fd54be5731f8b2691fe0f",
+        "android_client_info": {
+          "package_name": "com.vitrinint.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080899022878-qh6f1hgggt5u96k46v14mc6644222gfi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyActyWdN1lEaMoi8qkisAhHG4gKs7Q0wvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080899022878-qh6f1hgggt5u96k46v14mc6644222gfi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
