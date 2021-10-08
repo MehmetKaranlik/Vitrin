@@ -1,4 +1,4 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 class Stories {
   int id;
@@ -6,11 +6,14 @@ class Stories {
   String storyImage;
   String createdAt;
   String updatedAt;
+  String shopImage;
 
-  Stories(
-      this.id, this.shopId, this.storyImage, this.createdAt, this.updatedAt);
+  Stories(this.id, this.shopId, this.storyImage, this.createdAt, this.updatedAt,
+      this.shopImage);
 
   static fromJson(Map<String, dynamic> jsonObject) {
+    String shopImage =
+        TextUtils.getImageUrl(jsonObject["image_url"].toString());
     int id = int.parse(jsonObject['id'].toString());
     int shopId = int.parse(jsonObject['shop_id'].toString());
     String storyImage =
@@ -18,7 +21,7 @@ class Stories {
     String createdAt = jsonObject['created_at'].toString();
     String updatedAt = jsonObject['updated_at'].toString();
 
-    return Stories(id, shopId, storyImage, createdAt, updatedAt);
+    return Stories(id, shopId, storyImage, createdAt, updatedAt, shopImage);
   }
 
   static List<Stories> getListFromJson(List<dynamic> jsonArray) {

@@ -1,17 +1,17 @@
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/Account.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/ImageUtils.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/UrlUtils.dart';
-import 'package:vitrinint/views/addresses/AllAddressScreen.dart';
-import 'package:vitrinint/views/auth/EditProfileScreen.dart';
-import 'package:vitrinint/views/auth/LoginScreen.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AppDataController.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/Account.dart';
+import '../../models/AppData.dart';
+import '../../models/MyResponse.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/ImageUtils.dart';
+import '../../utils/SizeConfig.dart';
+import '../../utils/UrlUtils.dart';
+import '../addresses/AllAddressScreen.dart';
+import 'EditProfileScreen.dart';
+import 'LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -46,10 +46,12 @@ class _SettingScreenState extends State<SettingScreen> {
     });
   }
 
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = new GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      new GlobalKey<ScaffoldMessengerState>();
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -118,8 +120,8 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Row(
                 children: <Widget>[
                   ClipRRect(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(MySize.getScaledSizeWidth(24))),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(MySize.getScaledSizeWidth(24))),
                       child: ImageUtils.getImageFromNetwork(
                           account!.getAvatarUrl(),
                           width: 48,
@@ -194,12 +196,13 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Center(
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)),
+                    backgroundColor: MaterialStateProperty.all(appdata == null
+                        ? Colors.purple
+                        : HexColor(appdata!.first.mainColor)),
                     padding: MaterialStateProperty.all(Spacing.xy(24, 12)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4),
-                    ))
-                ),
+                    ))),
                 onPressed: () async {
                   await AuthController.logoutUser();
                   Navigator.pushReplacement(
@@ -209,7 +212,6 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   );
                 },
-
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -236,5 +238,4 @@ class _SettingScreenState extends State<SettingScreen> {
       return Container();
     }
   }
-
 }

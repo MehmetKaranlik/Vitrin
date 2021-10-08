@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/MyResponse.dart';
+import '../models/UserAddress.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class AddressController {
-
   //-------------------- Add user address --------------------------------//
   static Future<MyResponse> addAddress(
       {double? latitude,
@@ -42,13 +41,13 @@ class AddressController {
 
     //Check Internet
     bool isConnected = await InternetUtils.checkConnection();
-    if(!isConnected){
+    if (!isConnected) {
       return MyResponse.makeInternetConnectionError();
     }
 
     try {
-      NetworkResponse response = await Network.post(
-          url, headers: headers, body: body);
+      NetworkResponse response =
+          await Network.post(url, headers: headers, body: body);
       MyResponse myResponse = MyResponse(response.statusCode);
       if (response.statusCode == 200) {
         myResponse.success = true;
@@ -58,16 +57,14 @@ class AddressController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError();
     }
   }
 
-
   //-------------------- Get all address for currently login user --------------------------------//
   static Future<MyResponse<List<UserAddress>>> getMyAddresses() async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.ADDRESSES;
@@ -83,8 +80,8 @@ class AddressController {
     try {
       NetworkResponse response = await Network.get(url, headers: headers);
 
-      MyResponse<List<UserAddress>> myResponse = MyResponse(
-          response.statusCode);
+      MyResponse<List<UserAddress>> myResponse =
+          MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
         myResponse.data =
@@ -95,12 +92,11 @@ class AddressController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<List<UserAddress>>();
     }
   }
-
 
   //-------------------- Delete user address --------------------------------//
   static Future<MyResponse> updateAddress(int addressId,

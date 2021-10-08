@@ -1,11 +1,11 @@
 import 'dart:collection';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AddressController.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AddressController.dart';
+import '../../models/MyResponse.dart';
+import '../../models/UserAddress.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -111,8 +111,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           desiredAccuracy: LocationAccuracy.high);
       double zoom = await mapController!.getZoomLevel();
       _changeLocation(zoom, LatLng(position.latitude, position.longitude));
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   void _onMapTap(LatLng latLong) {

@@ -2,31 +2,31 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AddressController.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/HomeController.dart';
-import 'package:vitrinint/models/AdBanner.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/Category.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Shop.dart';
-import 'package:vitrinint/models/Stories.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
-import 'package:vitrinint/views/ShopScreen.dart';
-import 'package:vitrinint/views/addresses/AddAddressScreen.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../controllers/AddressController.dart';
+import '../controllers/AppDataController.dart';
+import '../controllers/HomeController.dart';
+import '../models/AdBanner.dart';
+import '../models/AppData.dart';
+import '../models/Category.dart';
+import '../models/MyResponse.dart';
+import '../models/Shop.dart';
+import '../models/Stories.dart';
+import '../models/UserAddress.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/SizeConfig.dart';
+import '../utils/TextUtils.dart';
+import 'ShopScreen.dart';
+import 'addresses/AddAddressScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:vitrinint/views/StoryScreen.dart';
-import 'package:vitrinint/views/addresses/HomeFilterScreen.dart';
+import 'StoryScreen.dart';
+import 'addresses/HomeFilterScreen.dart';
 import 'package:sizer/sizer.dart';
-import 'package:vitrinint/widgets/sized_place_holder.dart';
+import '../widgets/sized_place_holder.dart';
 
 class HomeScreen extends StatefulWidget {
   final double? myDistance;
@@ -526,7 +526,6 @@ class _HomeScreenState extends State<HomeScreen> {
         storyList.add(
           InkWell(
             onTap: () async {
-              print('test');
               await showModalBottomSheet(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
@@ -542,8 +541,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     }
-    /* print(storyList.length);
-    print(stories.length);*/
 
     return Container(
       height: 8.h,

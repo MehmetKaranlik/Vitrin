@@ -1,18 +1,17 @@
-
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/Validator.dart';
-import 'package:vitrinint/views/AppScreen.dart';
-import 'package:vitrinint/views/auth/LoginScreen.dart';
-import 'package:vitrinint/widgets/FlutButton.dart';
+import '../../AppTheme.dart';
+import '../../AppThemeNotifier.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AppDataController.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/AppData.dart';
+import '../../models/MyResponse.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/SizeConfig.dart';
+import '../../utils/Validator.dart';
+import '../AppScreen.dart';
+import 'LoginScreen.dart';
+import '../../widgets/FlutButton.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +64,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else if (password.isEmpty) {
       showMessage(message: Translator.translate("please_fill_password"));
     } else {
-      if(mounted) {
+      if (mounted) {
         setState(() {
           isInProgress = true;
         });
@@ -172,7 +172,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Container(
                           child: Image.asset(
                             './assets/images/shopping.png',
-                            color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                            color: appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor),
                             width: 54,
                             height: 54,
                           ),
@@ -181,7 +183,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Container(
                             margin: Spacing.top(24),
                             child: Text(
-                              Translator.translate("create_account").toUpperCase(),
+                              Translator.translate("create_account")
+                                  .toUpperCase(),
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.headline6,
                                   color: themeData.colorScheme.onBackground,
@@ -203,8 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintStyle: AppTheme.getTextStyle(
                                     themeData.textTheme.subtitle2,
                                     letterSpacing: 0.1,
-                                    color:
-                                    themeData.colorScheme.onBackground,
+                                    color: themeData.colorScheme.onBackground,
                                     fontWeight: 500),
                                 border: allTFBorder,
                                 enabledBorder: allTFBorder,
@@ -217,8 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 contentPadding: Spacing.zero),
                             keyboardType: TextInputType.text,
                             controller: nameTFController,
-                            textCapitalization:
-                            TextCapitalization.sentences,
+                            textCapitalization: TextCapitalization.sentences,
                           ),
                         ),
                         Container(
@@ -234,8 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintStyle: AppTheme.getTextStyle(
                                     themeData.textTheme.subtitle2,
                                     letterSpacing: 0.1,
-                                    color:
-                                    themeData.colorScheme.onBackground,
+                                    color: themeData.colorScheme.onBackground,
                                     fontWeight: 500),
                                 border: allTFBorder,
                                 enabledBorder: allTFBorder,
@@ -295,7 +295,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Container(
                           margin: Spacing.fromLTRB(24, 16, 24, 0),
                           child: FlutButton.medium(
-                            backgroundColor: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                            backgroundColor: appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor),
                             borderRadiusAll: 8,
                             onPressed: () {
                               if (!isInProgress) {
@@ -309,11 +311,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    Translator.translate("create").toUpperCase(),
+                                    Translator.translate("create")
+                                        .toUpperCase(),
                                     style: AppTheme.getTextStyle(
                                         themeData.textTheme.bodyText2,
-                                        color: themeData
-                                            .colorScheme.onPrimary,
+                                        color: themeData.colorScheme.onPrimary,
                                         letterSpacing: 0.8,
                                         fontWeight: 700),
                                   ),
@@ -321,35 +323,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 Positioned(
                                   right: 16,
                                   child: isInProgress
-
                                       ? Container(
-                                    width: MySize.size16,
-                                    height: MySize.size16,
-                                    child: CircularProgressIndicator(
-                                        valueColor:
-                                        AlwaysStoppedAnimation<
-                                            Color>(
-                                            themeData
-                                                .colorScheme
-                                                .onPrimary),
-                                        strokeWidth: 1.4),
-                                  )
+                                          width: MySize.size16,
+                                          height: MySize.size16,
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      themeData.colorScheme
+                                                          .onPrimary),
+                                              strokeWidth: 1.4),
+                                        )
                                       : ClipOval(
-                                    child: Container(
-                                      color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
-
-                                      child: SizedBox(
-                                          width: MySize.size30,
-                                          height: MySize.size30,
-                                          child: Icon(
-                                            MdiIcons.arrowRight,
-                                            color: themeData
-                                                .colorScheme
-                                                .onPrimary,
-                                            size: MySize.size18,
-                                          )),
-                                    ),
-                                  ),
+                                          child: Container(
+                                            color: appdata == null
+                                                ? Colors.purple
+                                                : HexColor(
+                                                    appdata!.first.mainColor),
+                                            child: SizedBox(
+                                                width: MySize.size30,
+                                                height: MySize.size30,
+                                                child: Icon(
+                                                  MdiIcons.arrowRight,
+                                                  color: themeData
+                                                      .colorScheme.onPrimary,
+                                                  size: MySize.size18,
+                                                )),
+                                          ),
+                                        ),
                                 ),
                               ],
                             ),
@@ -366,7 +366,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         builder: (context) => LoginScreen()));
                               },
                               child: Text(
-                                Translator.translate("i_have_already_an_account"),
+                                Translator.translate(
+                                    "i_have_already_an_account"),
                                 style: AppTheme.getTextStyle(
                                     themeData.textTheme.bodyText2,
                                     color: themeData.colorScheme.onBackground,

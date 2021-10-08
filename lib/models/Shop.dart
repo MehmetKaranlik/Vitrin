@@ -1,12 +1,9 @@
-
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 import 'Manager.dart';
 import 'Product.dart';
 
 class Shop {
-
-
   int? id, managerId;
   String name;
   String description;
@@ -49,9 +46,7 @@ class Shop {
       this.manager,
       this.products);
 
-
   static fromJson(Map<String, dynamic> jsonObject) {
-
     int id = int.parse(jsonObject['id'].toString());
     String name = jsonObject['name'].toString();
     String description = jsonObject['description'].toString();
@@ -121,14 +116,12 @@ class Shop {
     return list;
   }
 
-
   @override
   String toString() {
     return 'Shop{id: $id, managerId: $managerId, name: $name, description: $description, email: $email, mobile: $mobile, latitude: $latitude, longitude: $longitude, address: $address, imageUrl: $imageUrl, totalRating: $totalRating, rating: $rating, tax: $tax, deliveryRange: $deliveryRange, availableForDelivery: $availableForDelivery, isOpen: $isOpen, adminCommission: $adminCommission, minimumDeliveryCharge: $minimumDeliveryCharge, deliveryCostMultiplier: $deliveryCostMultiplier, manager: $manager, products: $products}';
   }
 
-  static String getPlaceholderImage(){
+  static String getPlaceholderImage() {
     return './assets/images/placeholder/no-shop-image.png';
   }
-
 }

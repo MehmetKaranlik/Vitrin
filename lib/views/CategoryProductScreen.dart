@@ -1,14 +1,14 @@
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/CategoryController.dart';
-import 'package:vitrinint/models/Category.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/Generator.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/views/LoadingScreens.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../controllers/CategoryController.dart';
+import '../models/Category.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/Generator.dart';
+import '../utils/SizeConfig.dart';
+import 'LoadingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -122,13 +122,13 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
                                   minHeight: MySize.size3,
                                 )
                               : Container(
-                    height: MySize.size3,
-                  ),
-                ),
-                Expanded(child: _buildBody()),
-              ],
-            ),
-          ))));
+                                  height: MySize.size3,
+                                ),
+                        ),
+                        Expanded(child: _buildBody()),
+                      ],
+                    ),
+                  ))));
     });
   }
 
@@ -144,8 +144,7 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
     } else if (isInProgress) {
       return LoadingScreens.getSearchLoadingScreen(
           context, themeData!, customAppTheme);
-    }
-    else {
+    } else {
       return Center(
         child: Text(Translator.translate("something_wrong")),
       );
@@ -219,14 +218,14 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
                       }
                     },
                     height: MySize.size90,
-              width: MySize.size90,
-              fit: BoxFit.cover,
-            )
+                    width: MySize.size90,
+                    fit: BoxFit.cover,
+                  )
                 : Image.asset(
-              Product.getPlaceholderImage(),
-              height: MySize.size90,
-              fit: BoxFit.fill,
-            ),
+                    Product.getPlaceholderImage(),
+                    height: MySize.size90,
+                    fit: BoxFit.fill,
+                  ),
           ),
           Expanded(
             child: Container(
@@ -306,7 +305,6 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
     );
   }
 
-
   void showMessage({String message = "Something wrong", Duration? duration}) {
     if (duration == null) {
       duration = Duration(seconds: 1);
@@ -322,7 +320,4 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
       ),
     );
   }
-
-
-
 }

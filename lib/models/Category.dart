@@ -1,6 +1,4 @@
-
-
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 import 'SubCategory.dart';
 
@@ -35,7 +33,6 @@ class Category {
     }
     return list;
   }
-
 
   @override
   String toString() {

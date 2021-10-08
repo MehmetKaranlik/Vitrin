@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/Account.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/ImageUtils.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AppDataController.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/Account.dart';
+import '../../models/AppData.dart';
+import '../../models/MyResponse.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/ImageUtils.dart';
+import '../../utils/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -71,7 +71,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -263,7 +264,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       prefixIcon: Icon(
                         MdiIcons.lockOutline,
                         size: 22,
-                        color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                        color: appdata == null
+                            ? Colors.purple
+                            : HexColor(appdata!.first.mainColor),
                       ),
                       suffixIcon: InkWell(
                         onTap: () {
@@ -300,9 +303,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)),
-                          padding: MaterialStateProperty.all(Spacing.xy(24, 12)),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          backgroundColor: MaterialStateProperty.all(
+                              appdata == null
+                                  ? Colors.purple
+                                  : HexColor(appdata!.first.mainColor)),
+                          padding:
+                              MaterialStateProperty.all(Spacing.xy(24, 12)),
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ))),
                       onPressed: () {

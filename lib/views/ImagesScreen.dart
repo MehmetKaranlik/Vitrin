@@ -4,27 +4,27 @@ import 'dart:developer';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/api/currency_api.dart';
-import 'package:vitrinint/controllers/CartController.dart';
-import 'package:vitrinint/controllers/FavoriteController.dart';
-import 'package:vitrinint/controllers/ProductController.dart';
-import 'package:vitrinint/controllers/ShopController.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/models/ProductImage.dart';
-import 'package:vitrinint/models/Shop.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/Generator.dart';
-import 'package:vitrinint/utils/ProductUtils.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
-import 'package:vitrinint/utils/UrlUtils.dart';
-import 'package:vitrinint/views/CartScreen.dart';
-import 'package:vitrinint/views/LoadingScreens.dart';
-import 'package:vitrinint/views/ShopScreen.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../api/currency_api.dart';
+import '../controllers/CartController.dart';
+import '../controllers/FavoriteController.dart';
+import '../controllers/ProductController.dart';
+import '../controllers/ShopController.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../models/ProductImage.dart';
+import '../models/Shop.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/Generator.dart';
+import '../utils/ProductUtils.dart';
+import '../utils/SizeConfig.dart';
+import '../utils/TextUtils.dart';
+import '../utils/UrlUtils.dart';
+import 'CartScreen.dart';
+import 'LoadingScreens.dart';
+import 'ShopScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -47,7 +47,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
   //Global Keys
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = new GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      new GlobalKey<ScaffoldMessengerState>();
   final GlobalKey _productItemSelectKey = new GlobalKey();
 
   //Other Variables
@@ -82,7 +83,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
       });
     }
 
-    MyResponse<Product> myResponse = await ProductController.getSingleProduct(widget.productId);
+    MyResponse<Product> myResponse =
+        await ProductController.getSingleProduct(widget.productId);
     if (myResponse.success) {
       product = myResponse.data;
     } else {
@@ -154,54 +156,54 @@ class _ImagesScreenState extends State<ImagesScreen> {
   Widget build(BuildContext context) {
     return Consumer<AppThemeNotifier>(
         builder: (BuildContext context, AppThemeNotifier value, Widget? child) {
-          themeData = AppTheme.getThemeFromThemeMode(value.themeMode());
-          customAppTheme = AppTheme.getCustomAppTheme(value.themeMode());
-          return WillPopScope(
-            onWillPop: () async {
-              Navigator.pop(context, product);
-              return false;
-            },
-            child: MaterialApp(
-                scaffoldMessengerKey: _scaffoldMessengerKey,
-                debugShowCheckedModeBanner: false,
-                theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
-                home: Scaffold(
-                    key: _scaffoldKey,
-                    appBar: AppBar(
-                      backgroundColor: customAppTheme!.bgLayer1,
-                      elevation: 0,
-                      leading: InkWell(
-                        onTap: () {
-                          Navigator.pop(context, product);
-                        },
-                        child: Icon(MdiIcons.chevronLeft),
+      themeData = AppTheme.getThemeFromThemeMode(value.themeMode());
+      customAppTheme = AppTheme.getCustomAppTheme(value.themeMode());
+      return WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, product);
+          return false;
+        },
+        child: MaterialApp(
+            scaffoldMessengerKey: _scaffoldMessengerKey,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
+            home: Scaffold(
+                key: _scaffoldKey,
+                appBar: AppBar(
+                  backgroundColor: customAppTheme!.bgLayer1,
+                  elevation: 0,
+                  leading: InkWell(
+                    onTap: () {
+                      Navigator.pop(context, product);
+                    },
+                    child: Icon(MdiIcons.chevronLeft),
+                  ),
+                  centerTitle: true,
+                  title: Text(product != null ? product!.name! : "Loading...",
+                      style: AppTheme.getTextStyle(
+                          themeData!.appBarTheme.textTheme!.headline6,
+                          fontWeight: 600)),
+                ),
+                backgroundColor: customAppTheme!.bgLayer1,
+                body: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MySize.size3,
+                        child: isInProgress
+                            ? LinearProgressIndicator(
+                                minHeight: MySize.size3,
+                              )
+                            : Container(
+                                height: MySize.size3,
+                              ),
                       ),
-                      centerTitle: true,
-                      title: Text(product != null ? product!.name! : "Loading...",
-                          style: AppTheme.getTextStyle(
-                              themeData!.appBarTheme.textTheme!.headline6,
-                              fontWeight: 600)),
-                    ),
-                    backgroundColor: customAppTheme!.bgLayer1,
-                    body: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            height: MySize.size3,
-                            child: isInProgress
-                                ? LinearProgressIndicator(
-                              minHeight: MySize.size3,
-                            )
-                                : Container(
-                              height: MySize.size3,
-                            ),
-                          ),
-                          Expanded(child: buildBody()),
-                        ],
-                      ),
-                    ))),
-          );
-        });
+                      Expanded(child: buildBody()),
+                    ],
+                  ),
+                ))),
+      );
+    });
   }
 
   buildBody() {
@@ -229,9 +231,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
               height: 30.0,
               child: CircularProgressIndicator(
                 backgroundColor: Colors.blueAccent,
-                value: event == null
-                    ? 0
-                    : event.cumulativeBytesLoaded / 3,
+                value: event == null ? 0 : event.cumulativeBytesLoaded / 3,
               ),
             ),
           ),
@@ -257,7 +257,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
         isInProgress = true;
       });
     }
-    MyResponse<Shop> myResponse = await ShopController.getSingleShop(product!.shopId);
+    MyResponse<Shop> myResponse =
+        await ShopController.getSingleShop(product!.shopId);
     if (myResponse.success) {
       shop = myResponse.data;
       log(shop.toString());

@@ -1,4 +1,4 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 class UserAddress {
   int id, type;

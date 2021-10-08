@@ -1,15 +1,13 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
-class Coupon{
-
+class Coupon {
   int id;
   String code;
   String description;
   int offer;
-  double minOrder,maxDiscount;
+  double minOrder, maxDiscount;
   bool isActivate;
-  DateTime startedAt,expiredAt;
-
+  DateTime startedAt, expiredAt;
 
   Coupon(this.id, this.code, this.description, this.offer, this.minOrder,
       this.maxDiscount, this.isActivate, this.startedAt, this.expiredAt);
@@ -24,7 +22,8 @@ class Coupon{
     bool isActivate = TextUtils.parseBool(jsonObject['is_activate'].toString());
     DateTime startedAt = DateTime.parse(jsonObject['started_at'].toString());
     DateTime expiredAt = DateTime.parse(jsonObject['expired_at'].toString());
-    return Coupon(id, code, description, offer, minOrder, maxDiscount, isActivate, startedAt, expiredAt);
+    return Coupon(id, code, description, offer, minOrder, maxDiscount,
+        isActivate, startedAt, expiredAt);
   }
 
   static List<Coupon> getListFromJson(List<dynamic> jsonArray) {
@@ -35,17 +34,16 @@ class Coupon{
     return list;
   }
 
-  double getDiscountValue(double order){
-    double discount = (order*offer /100);
-    if(discount>maxDiscount){
+  double getDiscountValue(double order) {
+    double discount = (order * offer / 100);
+    if (discount > maxDiscount) {
       return maxDiscount;
-    }else{
+    } else {
       return discount;
     }
   }
 
-  static getDiscountedOrderValueByCoupon(Coupon coupon,double order){
+  static getDiscountedOrderValueByCoupon(Coupon coupon, double order) {
     return coupon.getDiscountValue(order);
   }
-
 }

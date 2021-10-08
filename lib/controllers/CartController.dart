@@ -1,21 +1,18 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/Cart.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/Cart.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class CartController {
-
-
   //------------------------ Add into cart -----------------------------------------//
-  static Future<MyResponse> addIntoCart(int productId,int productItemId,
+  static Future<MyResponse> addIntoCart(int productId, int productItemId,
       {int quantity = 1}) async {
-
-  //Getting User Api Token
+    //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.CARTS;
     Map<String, String> headers =
@@ -38,8 +35,8 @@ class CartController {
     }
 
     try {
-      NetworkResponse response = await Network.post(
-          url, headers: headers, body: body);
+      NetworkResponse response =
+          await Network.post(url, headers: headers, body: body);
       MyResponse myResponse = MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
@@ -49,12 +46,11 @@ class CartController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError();
     }
   }
-
 
   //------------------------ Get all cart product -----------------------------------------//
   static Future<MyResponse<List<Cart>>> getAllCartProduct() async {
@@ -73,9 +69,7 @@ class CartController {
     try {
       NetworkResponse response = await Network.get(url, headers: headers);
 
-
       MyResponse<List<Cart>> myResponse = MyResponse(response.statusCode);
-
 
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
@@ -85,15 +79,14 @@ class CartController {
         myResponse.setError(json.decode(response.body!));
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<List<Cart>>();
     }
   }
 
-
   //------------------------ Change cart quantity -----------------------------------------//
-  static Future<MyResponse> changeCartQuantity(int cartId,int quantity) async {
+  static Future<MyResponse> changeCartQuantity(int cartId, int quantity) async {
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.CARTS + cartId.toString();
@@ -114,8 +107,8 @@ class CartController {
     }
 
     try {
-      NetworkResponse response = await Network.post(
-          url, headers: headers, body: body);
+      NetworkResponse response =
+          await Network.post(url, headers: headers, body: body);
       MyResponse myResponse = MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
@@ -125,12 +118,11 @@ class CartController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError();
     }
   }
-
 
   //------------------------ Delete cart -----------------------------------------//
   static Future<MyResponse> deleteCart(int cartId) async {
@@ -147,8 +139,7 @@ class CartController {
     }
 
     try {
-      NetworkResponse response = await Network.delete(
-          url, headers: headers);
+      NetworkResponse response = await Network.delete(url, headers: headers);
       MyResponse myResponse = MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
@@ -158,7 +149,7 @@ class CartController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError();
     }

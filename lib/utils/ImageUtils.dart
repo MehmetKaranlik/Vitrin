@@ -1,5 +1,5 @@
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../api/api_util.dart';
+import 'SizeConfig.dart';
 import 'package:flutter/material.dart';
 
 class ImageUtils {

@@ -1,21 +1,20 @@
-
-import 'package:vitrinint/models/ProductItemFeature.dart';
+import 'ProductItemFeature.dart';
 
 class ProductItem {
   int id;
-  int price,revenue,quantity;
+  int price, revenue, quantity;
   List<ProductItemFeature> productItemFeatures;
-
 
   ProductItem(this.id, this.price, this.revenue, this.quantity,
       this.productItemFeatures);
 
   static ProductItem fromJson(Map<String, dynamic> jsonObject) {
-    int id = int.parse(jsonObject['id'].toString()) ;
-    int price = int.parse(jsonObject['price'].toString()) ;
-    int revenue = int.parse(jsonObject['revenue'].toString()) ;
+    int id = int.parse(jsonObject['id'].toString());
+    int price = int.parse(jsonObject['price'].toString());
+    int revenue = int.parse(jsonObject['revenue'].toString());
     int quantity = int.parse(jsonObject['quantity'].toString());
-    List<ProductItemFeature> productItemFeatures = ProductItemFeature.getListFromJson(jsonObject['product_item_features']);
+    List<ProductItemFeature> productItemFeatures =
+        ProductItemFeature.getListFromJson(jsonObject['product_item_features']);
     return ProductItem(id, price, revenue, quantity, productItemFeatures);
   }
 

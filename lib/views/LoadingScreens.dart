@@ -1,10 +1,8 @@
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../AppTheme.dart';
+import '../utils/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shimmer/shimmer.dart';
-
-
 
 //----------------------- Loading Screens  (Shimmer Effects) ---------------------------//
 
@@ -112,9 +110,9 @@ class LoadingScreens {
         ));
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
-     list.add(Container(
-         padding: Spacing.fromLTRB(16, 8, 16, 8), child: singleLoading));
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(
+          padding: Spacing.fromLTRB(16, 8, 16, 8), child: singleLoading));
     }
     return ListView(
       children: list,
@@ -224,7 +222,7 @@ class LoadingScreens {
         ));
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
+    for (int i = 0; i < itemCount; i++) {
       list.add(Container(
           padding: Spacing.fromLTRB(16, 8, 16, 8), child: singleLoading));
     }
@@ -232,7 +230,6 @@ class LoadingScreens {
       children: list,
     );
   }
-
 
   static Widget getProductLoadingScreen(BuildContext context,
       ThemeData? themeData, CustomAppTheme customAppTheme) {
@@ -248,7 +245,9 @@ class LoadingScreens {
               width: MediaQuery.of(context).size.width * 0.45,
               color: Colors.grey,
             ),
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             Container(
               height: 90,
               width: MediaQuery.of(context).size.width,
@@ -288,11 +287,10 @@ class LoadingScreens {
       BuildContext context, ThemeData? themeData, CustomAppTheme customAppTheme,
       {int itemCount = 2}) {
     Widget singleLoading = Shimmer.fromColors(
-
         baseColor: customAppTheme.shimmerBaseColor,
         highlightColor: customAppTheme.shimmerHighlightColor,
         child: Container(
-          padding: Spacing.symmetric(horizontal: 16,vertical: 4),
+          padding: Spacing.symmetric(horizontal: 16, vertical: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -352,9 +350,8 @@ class LoadingScreens {
         ));
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
-      list.add(Container(
-          padding: Spacing.all(16), child: singleLoading));
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(padding: Spacing.all(16), child: singleLoading));
     }
     return Column(
       children: list,
@@ -433,9 +430,8 @@ class LoadingScreens {
     );
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
-      list.add(Container(
-          padding: Spacing.all(16), child: singleLoading));
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(padding: Spacing.all(16), child: singleLoading));
     }
     return Column(
       children: list,
@@ -522,9 +518,8 @@ class LoadingScreens {
     );
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
-      list.add(Container(
-          padding: Spacing.all(16), child: singleLoading));
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(padding: Spacing.all(16), child: singleLoading));
     }
     return Column(
       children: list,
@@ -559,8 +554,16 @@ class LoadingScreens {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(height: 8,width: 140,color: Colors.grey,),
-                  Container(height: 8,width: 140,color: Colors.grey,),
+                  Container(
+                    height: 8,
+                    width: 140,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    height: 8,
+                    width: 140,
+                    color: Colors.grey,
+                  ),
                 ],
               ),
             ),
@@ -570,15 +573,13 @@ class LoadingScreens {
     );
 
     List<Widget> list = [];
-    for(int i=0;i<itemCount;i++){
-      list.add(Container(
-          padding: Spacing.all(16), child: singleLoading));
+    for (int i = 0; i < itemCount; i++) {
+      list.add(Container(padding: Spacing.all(16), child: singleLoading));
     }
     return Column(
       children: list,
     );
   }
-
 
   static Widget getReviewLoadingScreen(BuildContext context,
       ThemeData? themeData, CustomAppTheme customAppTheme) {
@@ -628,7 +629,7 @@ class LoadingScreens {
               ),
             ),
             Padding(
-              padding: Spacing.only(top: 32.0,bottom: 16),
+              padding: Spacing.only(top: 32.0, bottom: 16),
               child: Container(
                 height: 16,
                 width: 120,
@@ -639,12 +640,10 @@ class LoadingScreens {
               height: 120,
               color: Colors.grey,
             ),
-
           ],
         ),
       ),
     );
-
   }
 
   static Widget getConfirmPaymentLoadingScreen(BuildContext context,
@@ -685,7 +684,9 @@ class LoadingScreens {
                 ),
               ],
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Row(
               children: <Widget>[
                 Flexible(
@@ -710,7 +711,9 @@ class LoadingScreens {
                 ),
               ],
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Row(
               children: <Widget>[
                 Flexible(
@@ -735,7 +738,9 @@ class LoadingScreens {
                 ),
               ],
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Row(
               children: <Widget>[
                 Flexible(
@@ -760,7 +765,9 @@ class LoadingScreens {
                 ),
               ],
             ),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Row(
               children: <Widget>[
                 Flexible(
@@ -789,9 +796,7 @@ class LoadingScreens {
         ),
       ),
     );
-
   }
-
 
   static Widget getSimpleImageScreen(
       BuildContext context, ThemeData? themeData, CustomAppTheme customAppTheme,

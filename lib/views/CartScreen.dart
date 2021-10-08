@@ -1,18 +1,18 @@
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/api/currency_api.dart';
-import 'package:vitrinint/controllers/CartController.dart';
-import 'package:vitrinint/models/Cart.dart';
-import 'package:vitrinint/models/CustomCart.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/models/ProductItem.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/ProductUtils.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/views/AppScreen.dart';
-import 'package:vitrinint/views/LoadingScreens.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../api/currency_api.dart';
+import '../controllers/CartController.dart';
+import '../models/Cart.dart';
+import '../models/CustomCart.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../models/ProductItem.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/ProductUtils.dart';
+import '../utils/SizeConfig.dart';
+import 'AppScreen.dart';
+import 'LoadingScreens.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
       showMessage(message: myResponse.errorText);
     }
 
-    if(mounted) {
+    if (mounted) {
       setState(() {
         isInProgress = false;
       });
@@ -101,14 +101,13 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   _deleteCart(cartId) async {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         isInProgress = true;
       });
     }
 
-    MyResponse myResponse =
-        await CartController.deleteCart(cartId);
+    MyResponse myResponse = await CartController.deleteCart(cartId);
 
     if (myResponse.success) {
       _loadCartData();
@@ -117,12 +116,11 @@ class _CartScreenState extends State<CartScreen> {
       showMessage(message: myResponse.errorText);
     }
 
-    if(mounted) {
+    if (mounted) {
       setState(() {
         isInProgress = false;
       });
     }
-
   }
 
   @override
@@ -216,11 +214,10 @@ class _CartScreenState extends State<CartScreen> {
               margin: Spacing.only(top: 24),
               child: ElevatedButton(
                   style: ButtonStyle(
-                      padding: MaterialStateProperty.all(Spacing.xy(24,12)),
+                      padding: MaterialStateProperty.all(Spacing.xy(24, 12)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4),
-                      ))
-                  ),
+                      ))),
                   onPressed: () {
                     Navigator.pushReplacement(
                         context,
@@ -361,14 +358,14 @@ class _CartScreenState extends State<CartScreen> {
                         }
                       },
                       height: MySize.size90,
-                width: MySize.size90,
-                fit: BoxFit.cover,
-              )
+                      width: MySize.size90,
+                      fit: BoxFit.cover,
+                    )
                   : Image.asset(
-                Product.getPlaceholderImage(),
-                height: MySize.size90,
-                fit: BoxFit.fill,
-              ),
+                      Product.getPlaceholderImage(),
+                      height: MySize.size90,
+                      fit: BoxFit.fill,
+                    ),
             ),
             Expanded(
               child: Container(
@@ -414,7 +411,8 @@ class _CartScreenState extends State<CartScreen> {
                               onTap: () {
                                 if (!isInProgress && isDecrease)
                                   _changeQuantity(
-                                      cartId: cart.id, quantity: cart.quantity - 1);
+                                      cartId: cart.id,
+                                      quantity: cart.quantity - 1);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -447,7 +445,8 @@ class _CartScreenState extends State<CartScreen> {
                               onTap: () {
                                 if (!isInProgress && isIncrease)
                                   _changeQuantity(
-                                      cartId: cart.id, quantity: cart.quantity + 1);
+                                      cartId: cart.id,
+                                      quantity: cart.quantity + 1);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -492,7 +491,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-
 }
 
 class _CartProductDialog extends StatefulWidget {

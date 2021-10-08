@@ -1,12 +1,12 @@
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/views/MaintenanceScreen.dart';
-import 'package:vitrinint/views/auth/LoginScreen.dart';
 import 'package:flutter/material.dart';
+
+import '../controllers/AuthController.dart';
+import '../views/MaintenanceScreen.dart';
+import '../views/auth/LoginScreen.dart';
 
 enum RequestType { Post, Get, PostWithAuth, GetWithAuth }
 
 class ApiUtil {
-
   /*----------------- Fpr development server -----------------*/
   static const String IP_ADDRESS = "vitrinint.com/io";
 
@@ -36,12 +36,10 @@ class ApiUtil {
   static const int ERROR_CODE = 400;
   static const int UNAUTHORIZED_CODE = 401;
 
-
   //Custom codes
   static const int INTERNET_NOT_AVAILABLE_CODE = 500;
   static const int SERVER_ERROR_CODE = 501;
   static const int MAINTENANCE_CODE = 503;
-
 
   //------------------ Header ------------------------------//
 
@@ -69,7 +67,7 @@ class ApiUtil {
           "Authorization": "Bearer " + token!
         };
     }
-    }
+  }
 
   // ----------------------  Body --------------------------//
   static Map<String, dynamic> getPatchRequestBody() {
@@ -150,11 +148,8 @@ class ApiUtil {
   //shop reviews
   static const String PRODUCT_REVIEWS = "product-reviews/";
 
-
   //delivery boy reviews
   static const String DELIVERY_BOY_REVIEWS = "delivery-boy-reviews/";
-
-
 
   //----------------- Redirects ----------------------------------//
   static Future<bool> checkRedirectNavigation(
@@ -197,9 +192,7 @@ class ApiUtil {
     return true;
   }
 
-  static bool isResponseSuccess(int responseCode){
-    return responseCode>=200 && responseCode<300;
+  static bool isResponseSuccess(int responseCode) {
+    return responseCode >= 200 && responseCode < 300;
   }
-
-
 }

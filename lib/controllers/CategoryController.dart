@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/Category.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import 'AuthController.dart';
+import '../models/Category.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 class CategoryController {
   //------------------------ Get all categories -----------------------------------------//
   static Future<MyResponse<List<Category>>> getAllCategory() async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.CATEGORIES;
@@ -43,10 +42,9 @@ class CategoryController {
     }
   }
 
-
   //------------------------ Get category products -----------------------------------------//
-  static Future<MyResponse<List<Product>>> getCategoryProducts(int categoryId) async {
-
+  static Future<MyResponse<List<Product>>> getCategoryProducts(
+      int categoryId) async {
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL +

@@ -1,17 +1,14 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/Filter.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import 'AuthController.dart';
+import '../models/Filter.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
-
-
-class ProductController{
-
+class ProductController {
   //------------------------ Get all products -----------------------------------------//
   static Future<MyResponse<List<Product>>> getAllProduct() async {
     //Get Api Token
@@ -39,16 +36,15 @@ class ProductController{
       }
 
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<List<Product>>();
     }
   }
 
-
   //------------------------ Get filtered product with shops -----------------------------------------//
-  static Future<MyResponse<List<Product>>> getFilteredProduct(Filter filter) async {
-
+  static Future<MyResponse<List<Product>>> getFilteredProduct(
+      Filter filter) async {
     //Create some body data
     String subCategoryIds = "";
     if (filter.subCategories.length != 0) {
@@ -103,16 +99,14 @@ class ProductController{
       }
 
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<List<Product>>();
     }
   }
 
-
   //------------------------ Get single product -----------------------------------------//
   static Future<MyResponse<Product>> getSingleProduct(int productId) async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.PRODUCTS + productId.toString();
@@ -137,15 +131,14 @@ class ProductController{
       }
 
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<Product>();
     }
   }
 
-
-  static Future<MyResponse<Product>> getSingleProductReviews(int productId) async {
-
+  static Future<MyResponse<Product>> getSingleProductReviews(
+      int productId) async {
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL +
@@ -174,13 +167,9 @@ class ProductController{
       }
 
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<Product>();
     }
   }
-
-
-
-
 }

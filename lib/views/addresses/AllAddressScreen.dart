@@ -1,14 +1,14 @@
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AddressController.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/views/LoadingScreens.dart';
-import 'package:vitrinint/views/addresses/AddAddressScreen.dart';
-import 'package:vitrinint/views/addresses/EditAddressScreen.dart';
+import '../../AppTheme.dart';
+import '../../AppThemeNotifier.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AddressController.dart';
+import '../../models/MyResponse.dart';
+import '../../models/UserAddress.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/SizeConfig.dart';
+import '../LoadingScreens.dart';
+import 'AddAddressScreen.dart';
+import 'EditAddressScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -46,17 +46,17 @@ class _AllAddressScreenState extends State<AllAddressScreen> {
   }
 
   _loadAllAddresses() async {
-
-    if(mounted) {
+    if (mounted) {
       setState(() {
         isInProgress = true;
       });
     }
 
-    MyResponse<List<UserAddress>> myResponse = await AddressController.getMyAddresses();
-    if(myResponse.success) {
+    MyResponse<List<UserAddress>> myResponse =
+        await AddressController.getMyAddresses();
+    if (myResponse.success) {
       userAddress = myResponse.data;
-    }else{
+    } else {
       ApiUtil.checkRedirectNavigation(context, myResponse.responseCode);
       showMessage(message: myResponse.errorText);
     }
@@ -170,14 +170,15 @@ class _AllAddressScreenState extends State<AllAddressScreen> {
                                   _refresh();
                                 }
                               },
-                              child: Text(Translator.translate("add_new_address").toUpperCase(),
+                              child: Text(
+                                  Translator.translate("add_new_address")
+                                      .toUpperCase(),
                                   style: AppTheme.getTextStyle(
                                       themeData.textTheme.caption,
                                       fontSize: 12,
                                       fontWeight: 600,
                                       letterSpacing: 0.5,
-                                      color:
-                                          themeData.colorScheme.onPrimary))),
+                                      color: themeData.colorScheme.onPrimary))),
                         ),
                       )
                     ],
@@ -187,38 +188,39 @@ class _AllAddressScreenState extends State<AllAddressScreen> {
     );
   }
 
-  _buildBody(){
-    if(userAddress!=null){
+  _buildBody() {
+    if (userAddress != null) {
       return _showAddresses(userAddress!);
-    }else if(isInProgress){
-      return LoadingScreens.getAddressLoadingScreen(context, themeData, customAppTheme);
-    }else{
-      return Center(child: Text(Translator.translate("there_is_no_saved_address")),);
+    } else if (isInProgress) {
+      return LoadingScreens.getAddressLoadingScreen(
+          context, themeData, customAppTheme);
+    } else {
+      return Center(
+        child: Text(Translator.translate("there_is_no_saved_address")),
+      );
     }
   }
-
 
   Widget _showAddresses(List<UserAddress> addresses) {
     List<Widget> listWidgets = [];
 
     for (UserAddress address in addresses) {
       listWidgets.add(InkWell(
-        onTap: () async {
-          bool? refresh = await Navigator.push(
+          onTap: () async {
+            bool? refresh = await Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => EditAddressScreen(
                           userAddress: address,
                         )));
-          if(refresh!=null && refresh){
+            if (refresh != null && refresh) {
               _refresh();
-          }
-
-        },
-        child: Container(
+            }
+          },
+          child: Container(
             margin: Spacing.bottom(16),
             child: _singleAddress(address),
-      )));
+          )));
     }
 
     return Container(
@@ -260,13 +262,13 @@ class _AllAddressScreenState extends State<AllAddressScreen> {
                   userAddress.address2 == null
                       ? Container()
                       : Container(
-                        margin: Spacing.top(4),
-                    child: Text(userAddress.address2!,
+                          margin: Spacing.top(4),
+                          child: Text(userAddress.address2!,
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.subtitle2,
                                   fontWeight: 500,
                                   letterSpacing: 0)),
-                      ),
+                        ),
                   Container(
                     margin: Spacing.top(8),
                     child: Row(
@@ -278,7 +280,7 @@ class _AllAddressScreenState extends State<AllAddressScreen> {
                                 letterSpacing: 0)),
                         Container(
                           margin: Spacing.left(4),
-                          child: Text(" - " +userAddress.pincode.toString(),
+                          child: Text(" - " + userAddress.pincode.toString(),
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.bodyText2,
                                   fontWeight: 500,

@@ -1,15 +1,14 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/Coupon.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/Coupon.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class UserCouponController {
-
   //------------------------ Get all coupons -----------------------------------------//
   static Future<MyResponse<List<Coupon>>> getCouponForShop(int? shopId) async {
     //Getting User Api Token
@@ -45,5 +44,4 @@ class UserCouponController {
       return MyResponse.makeServerProblemError<List<Coupon>>();
     }
   }
-
 }

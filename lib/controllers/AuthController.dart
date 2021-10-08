@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/Account.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/User.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/services/PushNotificationsManager.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../api/api_util.dart';
+import '../models/Account.dart';
+import '../models/MyResponse.dart';
+import '../models/User.dart';
+import '../services/Network.dart';
+import '../services/PushNotificationsManager.dart';
+import '../utils/InternetUtils.dart';
+import '../utils/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

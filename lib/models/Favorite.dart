@@ -1,7 +1,6 @@
-import 'package:vitrinint/models/Product.dart';
+import 'Product.dart';
 
-class Favorite{
-
+class Favorite {
   int id, productId;
   Product? product;
 
@@ -24,7 +23,4 @@ class Favorite{
     }
     return list;
   }
-
-
-
 }

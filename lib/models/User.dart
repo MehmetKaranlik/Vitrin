@@ -1,7 +1,6 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
-class User{
-
+class User {
   int id;
   String? name, email, avatarUrl;
   bool mobileVerified;
@@ -32,10 +31,7 @@ class User{
     return list;
   }
 
-  getAvatarUrl(){
+  getAvatarUrl() {
     return TextUtils.getImageUrl(avatarUrl ?? "");
   }
-
-
-
 }

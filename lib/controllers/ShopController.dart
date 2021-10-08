@@ -1,16 +1,14 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Shop.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/MyResponse.dart';
+import '../models/Shop.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class ShopController {
-
-
   //------------------------ Get single shop -----------------------------------------//
   static Future<MyResponse<Shop>> getSingleShop(int? shopId) async {
     //Getting User Api Token
@@ -36,7 +34,7 @@ class ShopController {
         myResponse.setError(json.decode(response.body!));
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<Shop>();
     }

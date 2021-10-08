@@ -1,16 +1,16 @@
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/Validator.dart';
-import 'package:vitrinint/views/auth/RegisterScreen.dart';
-import 'package:vitrinint/widgets/FlutButton.dart';
+import '../../AppTheme.dart';
+import '../../AppThemeNotifier.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AppDataController.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/AppData.dart';
+import '../../models/MyResponse.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/SizeConfig.dart';
+import '../../utils/Validator.dart';
+import 'RegisterScreen.dart';
+import '../../widgets/FlutButton.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +49,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -89,13 +90,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
       MyResponse myResponse = await AuthController.forgotPassword(email);
 
-      if(myResponse.success){
-        showMessage(message: Translator.translate("password_reset_link_was_sent"));
-      }else{
+      if (myResponse.success) {
+        showMessage(
+            message: Translator.translate("password_reset_link_was_sent"));
+      } else {
         ApiUtil.checkRedirectNavigation(context, myResponse.responseCode);
         showMessage(message: myResponse.errorText);
       }
-      if(mounted) {
+      if (mounted) {
         setState(() {
           isInProgress = false;
         });
@@ -124,7 +126,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Container(
                           child: Image.asset(
                             './assets/images/shopping.png',
-                            color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                            color: appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor),
                             width: 54,
                             height: 54,
                           ),
@@ -133,7 +137,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: Container(
                             margin: Spacing.top(24),
                             child: Text(
-                              Translator.translate("reset_password").toUpperCase(),
+                              Translator.translate("reset_password")
+                                  .toUpperCase(),
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.headline6,
                                   color: themeData.colorScheme.onBackground,
@@ -143,7 +148,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         Container(
-                          margin: Spacing.fromLTRB(24,24,24,0),
+                          margin: Spacing.fromLTRB(24, 24, 24, 0),
                           child: TextFormField(
                             style: AppTheme.getTextStyle(
                                 themeData.textTheme.bodyText1,
@@ -151,40 +156,39 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 color: themeData.colorScheme.onBackground,
                                 fontWeight: 500),
                             decoration: InputDecoration(
-                              hintText: Translator.translate("email_address"),
-                              hintStyle: AppTheme.getTextStyle(
-                                  themeData.textTheme.subtitle2,
-                                  letterSpacing: 0.1,
-                                  color: themeData.colorScheme.onBackground,
-                                  fontWeight: 500),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                      color: themeData.colorScheme.surface,
-                                      width: 1.2)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                      color: themeData.colorScheme.surface,
-                                      width: 1.2)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                      color: themeData.colorScheme.surface,
-                                      width: 1.2)),
-                              prefixIcon: Icon(
-                                MdiIcons.emailOutline,
-                                size: MySize.size22,
-                              ),
-                              isDense: true,
-                              contentPadding: Spacing.zero
-                            ),
+                                hintText: Translator.translate("email_address"),
+                                hintStyle: AppTheme.getTextStyle(
+                                    themeData.textTheme.subtitle2,
+                                    letterSpacing: 0.1,
+                                    color: themeData.colorScheme.onBackground,
+                                    fontWeight: 500),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: themeData.colorScheme.surface,
+                                        width: 1.2)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: themeData.colorScheme.surface,
+                                        width: 1.2)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                    borderSide: BorderSide(
+                                        color: themeData.colorScheme.surface,
+                                        width: 1.2)),
+                                prefixIcon: Icon(
+                                  MdiIcons.emailOutline,
+                                  size: MySize.size22,
+                                ),
+                                isDense: true,
+                                contentPadding: Spacing.zero),
                             keyboardType: TextInputType.emailAddress,
                             controller: emailTFController,
                           ),
@@ -192,7 +196,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         Container(
                           margin: Spacing.fromLTRB(24, 16, 24, 0),
                           child: FlutButton.medium(
-                            backgroundColor: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                            backgroundColor: appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor),
                             borderRadiusAll: 8,
                             onPressed: () {
                               if (!isInProgress) {
@@ -209,8 +215,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     Translator.translate("reset").toUpperCase(),
                                     style: AppTheme.getTextStyle(
                                         themeData.textTheme.bodyText2,
-                                        color: themeData
-                                            .colorScheme.onPrimary,
+                                        color: themeData.colorScheme.onPrimary,
                                         letterSpacing: 0.8,
                                         fontWeight: 700),
                                   ),
@@ -223,24 +228,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           height: MySize.size16,
                                           child: CircularProgressIndicator(
                                               valueColor:
-                                                  AlwaysStoppedAnimation<
-                                                          Color>(
-                                                      themeData
-                                                          .colorScheme
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      themeData.colorScheme
                                                           .onPrimary),
                                               strokeWidth: 1.4),
                                         )
                                       : ClipOval(
                                           child: Container(
-                                            color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                                            color: appdata == null
+                                                ? Colors.purple
+                                                : HexColor(
+                                                    appdata!.first.mainColor),
                                             child: SizedBox(
                                                 width: MySize.size30,
                                                 height: MySize.size30,
                                                 child: Icon(
                                                   MdiIcons.arrowRight,
                                                   color: themeData
-                                                      .colorScheme
-                                                      .onPrimary,
+                                                      .colorScheme.onPrimary,
                                                   size: MySize.size18,
                                                 )),
                                           ),
@@ -258,7 +263,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RegisterScreen()));
+                                        builder: (context) =>
+                                            RegisterScreen()));
                               },
                               child: Text(
                                 Translator.translate("i_have_not_an_account"),
@@ -271,7 +277,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                           ),
                         ),
-
                         AuthController.notice(themeData)
                       ],
                     ))));

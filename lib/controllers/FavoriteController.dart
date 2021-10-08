@@ -1,19 +1,16 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/Favorite.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/Favorite.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
-class FavoriteController{
-
-
+class FavoriteController {
   //------------------------ Toggle favorite ----------------------------------------//
   static Future<MyResponse> toggleFavorite(int productId) async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.FAVORITES;
@@ -35,8 +32,8 @@ class FavoriteController{
     }
 
     try {
-      NetworkResponse response = await Network.post(
-          url, headers: headers, body: body);
+      NetworkResponse response =
+          await Network.post(url, headers: headers, body: body);
       MyResponse<dynamic> myResponse = MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
@@ -47,16 +44,14 @@ class FavoriteController{
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError();
     }
   }
 
-
   //------------------------ Get all orders  -----------------------------------------//
   static Future<MyResponse<List<Favorite>>> getAllFavorite() async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.FAVORITES;
@@ -83,10 +78,9 @@ class FavoriteController{
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
       return MyResponse.makeServerProblemError<List<Favorite>>();
     }
-
   }
 }

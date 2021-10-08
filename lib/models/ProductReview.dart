@@ -1,7 +1,6 @@
-import 'package:vitrinint/models/User.dart';
+import 'User.dart';
 
-class ProductReview{
-
+class ProductReview {
   int? id, rating, orderId, productId, productItemId, userId;
   String review;
   DateTime? createdAt;
@@ -52,7 +51,4 @@ class ProductReview{
     }
     return list;
   }
-
-
-
 }

@@ -1,22 +1,20 @@
-
-
 import 'package:hexcolor/hexcolor.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/Validator.dart';
-import 'package:vitrinint/views/AppScreen.dart';
-import 'package:vitrinint/views/BlockedScreen.dart';
-import 'package:vitrinint/views/auth/ForgotPasswordScreen.dart';
-import 'package:vitrinint/views/auth/OTPVerificationScreen.dart';
-import 'package:vitrinint/views/auth/RegisterScreen.dart';
-import 'package:vitrinint/widgets/FlutButton.dart';
+import '../../AppTheme.dart';
+import '../../AppThemeNotifier.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AppDataController.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/AppData.dart';
+import '../../models/MyResponse.dart';
+import '../../services/AppLocalizations.dart';
+import '../../utils/SizeConfig.dart';
+import '../../utils/Validator.dart';
+import '../AppScreen.dart';
+import '../BlockedScreen.dart';
+import 'ForgotPasswordScreen.dart';
+import 'OTPVerificationScreen.dart';
+import 'RegisterScreen.dart';
+import '../../widgets/FlutButton.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -87,7 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -191,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _scaffoldKey,
                 body: Container(
                     color: customAppTheme.bgLayer1,
-                    child:  ListView(
+                    child: ListView(
                       padding: Spacing.top(150),
                       children: <Widget>[
                         Container(
@@ -206,7 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Container(
                             margin: Spacing.top(24),
                             child: Text(
-                              Translator.translate("welcome_back!").toUpperCase(),
+                              Translator.translate("welcome_back!")
+                                  .toUpperCase(),
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.headline6,
                                   color: themeData.colorScheme.onBackground,
@@ -216,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Container(
-                          margin: Spacing.fromLTRB(24,24,24,0),
+                          margin: Spacing.fromLTRB(24, 24, 24, 0),
                           child: TextFormField(
                             style: AppTheme.getTextStyle(
                                 themeData.textTheme.bodyText1,
@@ -224,28 +224,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: themeData.colorScheme.onBackground,
                                 fontWeight: 500),
                             decoration: InputDecoration(
-                              hintText: Translator.translate("email_address"),
-                              hintStyle: AppTheme.getTextStyle(
-                                  themeData.textTheme.subtitle2,
-                                  letterSpacing: 0.1,
-                                  color: themeData.colorScheme.onBackground,
-                                  fontWeight: 500),
-                              border: allTFBorder,
-                              enabledBorder: allTFBorder,
-                              focusedBorder: allTFBorder,
-                              prefixIcon: Icon(
-                                MdiIcons.emailOutline,
-                                size: MySize.size22,
-                              ),
-                              isDense: true,
-                              contentPadding: Spacing.zero
-                            ),
+                                hintText: Translator.translate("email_address"),
+                                hintStyle: AppTheme.getTextStyle(
+                                    themeData.textTheme.subtitle2,
+                                    letterSpacing: 0.1,
+                                    color: themeData.colorScheme.onBackground,
+                                    fontWeight: 500),
+                                border: allTFBorder,
+                                enabledBorder: allTFBorder,
+                                focusedBorder: allTFBorder,
+                                prefixIcon: Icon(
+                                  MdiIcons.emailOutline,
+                                  size: MySize.size22,
+                                ),
+                                isDense: true,
+                                contentPadding: Spacing.zero),
                             keyboardType: TextInputType.emailAddress,
                             controller: emailTFController,
                           ),
                         ),
                         Container(
-                          margin: Spacing.fromLTRB(24,16,24,0),
+                          margin: Spacing.fromLTRB(24, 16, 24, 0),
                           child: TextFormField(
                             obscureText: showPassword,
                             style: AppTheme.getTextStyle(
@@ -288,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         Container(
-                          margin: Spacing.fromLTRB(24,8,24,0),
+                          margin: Spacing.fromLTRB(24, 8, 24, 0),
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
@@ -299,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ForgotPasswordScreen()));
                             },
                             child: Text(
-                              Translator.translate("forgot_password")+" ?",
+                              Translator.translate("forgot_password") + " ?",
                               style: AppTheme.getTextStyle(
                                   themeData.textTheme.bodyText2,
                                   fontWeight: 500),
@@ -309,7 +308,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         Container(
                           margin: Spacing.fromLTRB(24, 16, 24, 0),
                           child: FlutButton.medium(
-                            backgroundColor: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                            backgroundColor: appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor),
                             borderRadiusAll: 8,
                             onPressed: () {
                               if (!isInProgress) {
@@ -323,11 +324,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    Translator.translate("log_in").toUpperCase(),
+                                    Translator.translate("log_in")
+                                        .toUpperCase(),
                                     style: AppTheme.getTextStyle(
                                         themeData.textTheme.bodyText2,
-                                        color: themeData
-                                            .colorScheme.onPrimary,
+                                        color: themeData.colorScheme.onPrimary,
                                         letterSpacing: 0.8,
                                         fontWeight: 700),
                                   ),
@@ -340,24 +341,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                           height: MySize.size16,
                                           child: CircularProgressIndicator(
                                               valueColor:
-                                                  AlwaysStoppedAnimation<
-                                                          Color>(
-                                                      themeData
-                                                          .colorScheme
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      themeData.colorScheme
                                                           .onPrimary),
                                               strokeWidth: 1.4),
                                         )
                                       : ClipOval(
                                           child: Container(
-                                            color: appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor),
+                                            color: appdata == null
+                                                ? Colors.purple
+                                                : HexColor(
+                                                    appdata!.first.mainColor),
                                             child: SizedBox(
                                                 width: MySize.size30,
                                                 height: MySize.size30,
                                                 child: Icon(
                                                   MdiIcons.arrowRight,
                                                   color: themeData
-                                                      .colorScheme
-                                                      .onPrimary,
+                                                      .colorScheme.onPrimary,
                                                   size: MySize.size18,
                                                 )),
                                           ),
@@ -375,7 +376,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RegisterScreen()));
+                                        builder: (context) =>
+                                            RegisterScreen()));
                               },
                               child: Text(
                                 Translator.translate("i_have_not_an_account"),

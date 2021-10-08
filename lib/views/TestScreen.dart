@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

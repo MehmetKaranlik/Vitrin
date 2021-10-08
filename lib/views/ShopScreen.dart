@@ -2,19 +2,19 @@ import 'dart:developer';
 
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/api/currency_api.dart';
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/ShopController.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/models/Shop.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/UrlUtils.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../api/currency_api.dart';
+import '../controllers/AppDataController.dart';
+import '../controllers/ShopController.dart';
+import '../models/AppData.dart';
+import '../models/MyResponse.dart';
+import '../models/Product.dart';
+import '../models/Shop.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/SizeConfig.dart';
+import '../utils/UrlUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -38,7 +38,8 @@ class _ShopScreenState extends State<ShopScreen> {
 
   //Global Keys
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = new GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      new GlobalKey<ScaffoldMessengerState>();
 
   double findAspectRatio(double width) {
     //Logic for aspect ratio of grid view
@@ -63,7 +64,8 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   getAppData() async {
-    MyResponse<Map<String, dynamic>> myResponse = await AppDataController.getAppData();
+    MyResponse<Map<String, dynamic>> myResponse =
+        await AppDataController.getAppData();
     if (myResponse.data != null) {
       appdata = myResponse.data![AppDataController.appdata];
     } else {
@@ -96,7 +98,7 @@ class _ShopScreenState extends State<ShopScreen> {
     }
 
     MyResponse<Shop> myResponse =
-    await ShopController.getSingleShop(widget.shopId);
+        await ShopController.getSingleShop(widget.shopId);
 
     if (myResponse.success) {
       shop = myResponse.data;
@@ -113,46 +115,46 @@ class _ShopScreenState extends State<ShopScreen> {
     }
   }
 
-  void launchWhatsapp({required number,message}) async{
+  void launchWhatsapp({required number, message}) async {
     String wUrl = "whatsapp://send?phone=$number&text=$message";
-    await canLaunch(wUrl)?launch(wUrl):print("Can't open whatsapp!");
+    await canLaunch(wUrl) ? launch(wUrl) : print("Can't open whatsapp!");
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppThemeNotifier>(
         builder: (BuildContext context, AppThemeNotifier value, Widget? child) {
-          themeData = AppTheme.getThemeFromThemeMode(value.themeMode());
-          customAppTheme = AppTheme.getCustomAppTheme(value.themeMode());
-          return MaterialApp(
-              scaffoldMessengerKey: _scaffoldMessengerKey,
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
-              home: Scaffold(
-                  key: _scaffoldKey,
-                  appBar: AppBar(
-                    backgroundColor: customAppTheme.bgLayer1,
-                    elevation: 0,
-                    leading: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(MdiIcons.chevronLeft),
-                    ),
-                    centerTitle: true,
-                    title: Text(
-                        shop != null ? shop!.name : Translator.translate("loading"),
-                        style: AppTheme.getTextStyle(
-                            themeData!.appBarTheme.textTheme!.headline6,
-                            fontWeight: 600)),
-                  ),
-                  backgroundColor: customAppTheme.bgLayer1,
-                  body: Container(
-                    child: ListView(
-                      padding: Spacing.zero,
-                      children: [
-                        Container(
-                          height: 3,
+      themeData = AppTheme.getThemeFromThemeMode(value.themeMode());
+      customAppTheme = AppTheme.getCustomAppTheme(value.themeMode());
+      return MaterialApp(
+          scaffoldMessengerKey: _scaffoldMessengerKey,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
+          home: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                backgroundColor: customAppTheme.bgLayer1,
+                elevation: 0,
+                leading: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(MdiIcons.chevronLeft),
+                ),
+                centerTitle: true,
+                title: Text(
+                    shop != null ? shop!.name : Translator.translate("loading"),
+                    style: AppTheme.getTextStyle(
+                        themeData!.appBarTheme.textTheme!.headline6,
+                        fontWeight: 600)),
+              ),
+              backgroundColor: customAppTheme.bgLayer1,
+              body: Container(
+                child: ListView(
+                  padding: Spacing.zero,
+                  children: [
+                    Container(
+                      height: 3,
                       child: isInProgress
                           ? LinearProgressIndicator(
                               minHeight: 3,
@@ -161,11 +163,11 @@ class _ShopScreenState extends State<ShopScreen> {
                               height: 3,
                             ),
                     ),
-                        _buildBody()
-                      ],
-                    ),
-                  )));
-        });
+                    _buildBody()
+                  ],
+                ),
+              )));
+    });
   }
 
   _buildBody() {
@@ -197,14 +199,17 @@ class _ShopScreenState extends State<ShopScreen> {
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)),
-                        padding: MaterialStateProperty.all(Spacing.xy(6,3)),
+                        backgroundColor: MaterialStateProperty.all(
+                            appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor)),
+                        padding: MaterialStateProperty.all(Spacing.xy(6, 3)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        ))
-                    ),     onPressed: () {
-                    UrlUtils.callFromNumber(shop!.mobile);
-                  },
+                        ))),
+                    onPressed: () {
+                      UrlUtils.callFromNumber(shop!.mobile);
+                    },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -229,15 +234,18 @@ class _ShopScreenState extends State<ShopScreen> {
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)),
-                        padding: MaterialStateProperty.all(Spacing.xy(6,3)),
+                        backgroundColor: MaterialStateProperty.all(
+                            appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor)),
+                        padding: MaterialStateProperty.all(Spacing.xy(6, 3)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        ))
-                    ),     onPressed: () {
-                    launchWhatsapp(number: shop!.mobile);
-                    //UrlUtils.callFromNumber(shop!.mobile);
-                  },
+                        ))),
+                    onPressed: () {
+                      launchWhatsapp(number: shop!.mobile);
+                      //UrlUtils.callFromNumber(shop!.mobile);
+                    },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -262,14 +270,17 @@ class _ShopScreenState extends State<ShopScreen> {
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)),
-                        padding: MaterialStateProperty.all(Spacing.xy(6,3)),
+                        backgroundColor: MaterialStateProperty.all(
+                            appdata == null
+                                ? Colors.purple
+                                : HexColor(appdata!.first.mainColor)),
+                        padding: MaterialStateProperty.all(Spacing.xy(6, 3)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        ))
-                    ), onPressed: () {
-                    UrlUtils.openMap(shop!.latitude, shop!.longitude);
-                  },
+                        ))),
+                    onPressed: () {
+                      UrlUtils.openMap(shop!.latitude, shop!.longitude);
+                    },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -319,8 +330,8 @@ class _ShopScreenState extends State<ShopScreen> {
                     child: shop!.products.length != 0
                         ? _showProducts(shop!.products)
                         : Container(
-                      child: Text("This shop doesn\'t have any product."),
-                    ))
+                            child: Text("This shop doesn\'t have any product."),
+                          ))
               ],
             ),
           ),
@@ -439,8 +450,12 @@ class _ShopScreenState extends State<ShopScreen> {
           child: Icon(
             product.isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
             color: product.isFavorite
-                ? appdata == null  ? Colors.purple : HexColor(appdata!.first.mainColor)
-                : appdata == null  ? Colors.purple : HexColor(appdata!.first.secondColor),
+                ? appdata == null
+                    ? Colors.purple
+                    : HexColor(appdata!.first.mainColor)
+                : appdata == null
+                    ? Colors.purple
+                    : HexColor(appdata!.first.secondColor),
             size: 22,
           ),
         )

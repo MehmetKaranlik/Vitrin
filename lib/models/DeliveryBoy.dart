@@ -1,8 +1,6 @@
+import '../utils/TextUtils.dart';
 
-import 'package:vitrinint/utils/TextUtils.dart';
-
-class DeliveryBoy{
-
+class DeliveryBoy {
   int id;
   String name, email, avatarUrl, mobile;
   double? latitude, longitude;

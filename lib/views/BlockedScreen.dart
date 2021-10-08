@@ -1,12 +1,12 @@
-import 'package:vitrinint/controllers/AppDataController.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/UrlUtils.dart';
-import 'package:vitrinint/views/AppScreen.dart';
-import 'package:vitrinint/views/auth/LoginScreen.dart';
-import 'package:vitrinint/widgets/FlutButton.dart';
+import '../controllers/AppDataController.dart';
+import '../controllers/AuthController.dart';
+import '../models/MyResponse.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/SizeConfig.dart';
+import '../utils/UrlUtils.dart';
+import 'AppScreen.dart';
+import 'auth/LoginScreen.dart';
+import '../widgets/FlutButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,18 +1,16 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/Coupon.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/Coupon.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class CouponController {
-
   //------------------------ Get all coupons -----------------------------------------//
   static Future<MyResponse<List<Coupon>>> getAllCoupon() async {
-
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL + ApiUtil.COUPONS;
@@ -45,8 +43,8 @@ class CouponController {
       return MyResponse.makeServerProblemError<List<Coupon>>();
     }
   }
-  static Future<MyResponse<List<Coupon>>> getCouponForShop(int shopId) async {
 
+  static Future<MyResponse<List<Coupon>>> getCouponForShop(int shopId) async {
     //Getting User Api Token
     String? token = await AuthController.getApiToken();
     String url = ApiUtil.MAIN_API_URL +

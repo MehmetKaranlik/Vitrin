@@ -1,12 +1,12 @@
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/api/currency_api.dart';
-import 'package:vitrinint/models/Category.dart';
-import 'package:vitrinint/models/ProductImage.dart';
-import 'package:vitrinint/models/ProductItem.dart';
-import 'package:vitrinint/models/ProductReview.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../AppTheme.dart';
+import '../api/currency_api.dart';
+import 'Category.dart';
+import 'ProductImage.dart';
+import 'ProductItem.dart';
+import 'ProductReview.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/SizeConfig.dart';
+import '../utils/TextUtils.dart';
 import 'package:flutter/material.dart';
 
 import 'Shop.dart';

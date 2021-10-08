@@ -1,11 +1,10 @@
-
-import 'package:vitrinint/models/DeliveryBoy.dart';
-import 'package:vitrinint/models/DeliveryBoyReview.dart';
-import 'package:vitrinint/models/OrderPayment.dart';
-import 'package:vitrinint/models/ProductReview.dart';
-import 'package:vitrinint/models/ShopReview.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
+import 'DeliveryBoy.dart';
+import 'DeliveryBoyReview.dart';
+import 'OrderPayment.dart';
+import 'ProductReview.dart';
+import 'ShopReview.dart';
+import 'UserAddress.dart';
+import '../services/AppLocalizations.dart';
 import 'package:flutter/material.dart';
 
 import 'Cart.dart';
@@ -142,9 +141,8 @@ class OrderReview {
     return list;
   }
 
-  static String getTextFromOrderStatus(int status,int orderType) {
-
-    if(OrderReview.isPickUpOrder(orderType)){
+  static String getTextFromOrderStatus(int status, int orderType) {
+    if (OrderReview.isPickUpOrder(orderType)) {
       switch (status) {
         case 0:
           return Translator.translate("wait_for_payment");
@@ -160,9 +158,9 @@ class OrderReview {
         case 6:
           return Translator.translate("reviewed");
         default:
-          return getTextFromOrderStatus(1,orderType);
+          return getTextFromOrderStatus(1, orderType);
       }
-    }else {
+    } else {
       switch (status) {
         case 0:
           return Translator.translate("wait_for_payment");
@@ -179,17 +177,17 @@ class OrderReview {
         case 6:
           return Translator.translate("reviewed");
         default:
-          return getTextFromOrderStatus(1,orderType);
+          return getTextFromOrderStatus(1, orderType);
       }
     }
   }
 
-  static String getTextFromOrderType(int type){
-    switch(type){
+  static String getTextFromOrderType(int type) {
+    switch (type) {
       case 1:
         return Translator.translate("self_pickup");
       case 2:
-        return  Translator.translate("home_delivery");
+        return Translator.translate("home_delivery");
     }
     return getTextFromOrderType(1);
   }
@@ -226,9 +224,9 @@ class OrderReview {
   static String getPaymentTypeText(int paymentType) {
     switch (paymentType) {
       case 1:
-        return  Translator.translate("cash_on_delivery");
+        return Translator.translate("cash_on_delivery");
       case 2:
-        return  Translator.translate("razorpay");
+        return Translator.translate("razorpay");
     }
     return getPaymentTypeText(1);
   }
@@ -236,6 +234,7 @@ class OrderReview {
   static bool isPaymentByCOD(int paymentType) {
     return paymentType == 1;
   }
+
   static bool isOrderCompleteWithReview(int status) {
     return status == 6;
   }

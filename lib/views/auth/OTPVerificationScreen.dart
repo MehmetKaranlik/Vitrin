@@ -1,11 +1,18 @@
+
+
+
+
+
+
+
 import 'dart:ui';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AuthController.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
-import 'package:vitrinint/views/auth/LoginScreen.dart';
+import '../../api/api_util.dart';
+import '../../controllers/AuthController.dart';
+import '../../models/MyResponse.dart';
+import '../../utils/SizeConfig.dart';
+import '../../utils/TextUtils.dart';
+import 'LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

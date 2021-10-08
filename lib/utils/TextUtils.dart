@@ -1,5 +1,4 @@
-
-import 'package:vitrinint/api/api_util.dart';
+import '../api/api_util.dart';
 
 class TextUtils {
   static List<dynamic> countryCode = [
@@ -250,21 +249,19 @@ class TextUtils {
     return url;
   }
 
-  static bool parseBool(dynamic text){
-    if(text.toString().compareTo("1")==0 || text.toString().compareTo("true")==0){
+  static bool parseBool(dynamic text) {
+    if (text.toString().compareTo("1") == 0 ||
+        text.toString().compareTo("true") == 0) {
       return true;
     }
     return false;
   }
 
-  static String boolToString(bool boolean){
+  static String boolToString(bool boolean) {
     return boolean ? "1" : "0";
   }
 
-
-  static String doubleToString(double value){
+  static String doubleToString(double value) {
     return value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
   }
-
-
 }

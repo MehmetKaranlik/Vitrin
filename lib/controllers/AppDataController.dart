@@ -1,11 +1,10 @@
-
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/AppData.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/AppData.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
@@ -18,7 +17,7 @@ class AppDataController {
     String? token = await AuthController.getApiToken();
     String? url = ApiUtil.MAIN_API_URL + ApiUtil.APP_DATA;
     Map<String, String> headers =
-    ApiUtil.getHeader(requestType: RequestType.GetWithAuth, token: token);
+        ApiUtil.getHeader(requestType: RequestType.GetWithAuth, token: token);
 
     //Check Internet
     bool isConnected = await InternetUtils.checkConnection();
@@ -28,7 +27,8 @@ class AppDataController {
 
     try {
       NetworkResponse response = await Network.get(url, headers: headers);
-      MyResponse<Map<String, dynamic>> myResponse = MyResponse(response.statusCode);
+      MyResponse<Map<String, dynamic>> myResponse =
+          MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode!)) {
         myResponse.success = true;
         dynamic decodedData = json.decode(response.body!);
@@ -47,4 +47,3 @@ class AppDataController {
     }
   }
 }
-

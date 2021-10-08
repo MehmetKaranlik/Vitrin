@@ -1,8 +1,6 @@
+import '../api/api_util.dart';
 
-import 'package:vitrinint/api/api_util.dart';
-
-class MyResponse<T>{
-
+class MyResponse<T> {
   bool success = false;
   T? data;
   List<dynamic> errors = [];
@@ -27,22 +25,21 @@ class MyResponse<T>{
     this.errorText = "Something wrong";
   }
 
-  static String getFormattedError(List<dynamic> errors){
+  static String getFormattedError(List<dynamic> errors) {
     String errorText = "";
-    for(int i=0;i<errors.length;i++){
-      errorText += "- " + errors[i] + (i+1<errors.length ? "\n" : "" );
+    for (int i = 0; i < errors.length; i++) {
+      errorText += "- " + errors[i] + (i + 1 < errors.length ? "\n" : "");
     }
     return errorText;
   }
 
-
-  static MyResponse<T> makeInternetConnectionError<T>(){
+  static MyResponse<T> makeInternetConnectionError<T>() {
     MyResponse<T> myResponse = MyResponse(ApiUtil.INTERNET_NOT_AVAILABLE_CODE);
     myResponse.errorText = "Please turn on internet";
     return myResponse;
   }
 
-  static MyResponse<T> makeServerProblemError<T>(){
+  static MyResponse<T> makeServerProblemError<T>() {
     MyResponse<T> myResponse = MyResponse(ApiUtil.SERVER_ERROR_CODE);
     myResponse.errorText = "Server Problem! Please try again later";
     return myResponse;

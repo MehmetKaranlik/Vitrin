@@ -1,10 +1,8 @@
-
-import 'package:vitrinint/models/Product.dart';
-import 'package:vitrinint/models/ProductItem.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
+import 'Product.dart';
+import 'ProductItem.dart';
+import '../utils/TextUtils.dart';
 
 class Cart {
-
   int id;
   bool active;
   int quantity;
@@ -52,6 +50,4 @@ class Cart {
   String toString() {
     return 'Cart{id: $id, active: $active, quantity: $quantity, productId: $productId, productItemId: $productItemId, product: $product, productItem: $productItem}';
   }
-
-
 }

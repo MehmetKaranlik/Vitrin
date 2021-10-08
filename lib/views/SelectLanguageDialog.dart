@@ -1,5 +1,5 @@
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
+import '../services/AppLocalizations.dart';
+import '../utils/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,12 +51,10 @@ class _SelectLanguageDialogState extends State<SelectLanguageDialog> {
     );
   }
 
-
-  _buildOptions(){
-
+  _buildOptions() {
     List<Widget> list = [];
 
-    for(int i=0;i<AllLanguage.supportedLanguagesCode.length;i++){
+    for (int i = 0; i < AllLanguage.supportedLanguagesCode.length; i++) {
       list.add(InkWell(
         onTap: () {
           _handleRadioValueChange(AllLanguage.supportedLanguagesCode[i]);
@@ -74,8 +72,7 @@ class _SelectLanguageDialogState extends State<SelectLanguageDialog> {
                 activeColor: themeData.colorScheme.primary,
               ),
               Text(AllLanguage.supportedLanguages[i],
-                  style: AppTheme.getTextStyle(
-                      themeData.textTheme.subtitle2,
+                  style: AppTheme.getTextStyle(themeData.textTheme.subtitle2,
                       fontWeight: 600)),
             ],
           ),

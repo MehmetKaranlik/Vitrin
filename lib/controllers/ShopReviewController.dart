@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/services/Network.dart';
-import 'package:vitrinint/utils/InternetUtils.dart';
+import '../api/api_util.dart';
+import '../models/MyResponse.dart';
+import '../services/Network.dart';
+import '../utils/InternetUtils.dart';
 
 import 'AuthController.dart';
 
 class ShopReviewController {
-
   //------------------------ Add review for products -----------------------------------------//
   static Future<MyResponse> addReview(
       int? shopId, int rating, String review) async {
@@ -26,13 +25,13 @@ class ShopReviewController {
 
     //Check Internet
     bool isConnected = await InternetUtils.checkConnection();
-    if(!isConnected){
+    if (!isConnected) {
       return MyResponse.makeInternetConnectionError();
     }
 
     try {
-      NetworkResponse response = await Network.post(
-          url, headers: headers, body: body);
+      NetworkResponse response =
+          await Network.post(url, headers: headers, body: body);
       MyResponse myResponse = MyResponse(response.statusCode);
 
       if (response.statusCode == 200) {
@@ -44,7 +43,7 @@ class ShopReviewController {
         myResponse.setError(data);
       }
       return myResponse;
-    }catch(e){
+    } catch (e) {
       //If any server error...
 
       return MyResponse.makeServerProblemError();

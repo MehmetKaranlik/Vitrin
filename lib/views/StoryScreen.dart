@@ -1,37 +1,27 @@
 import 'dart:async';
-import "package:carousel_slider/carousel_controller.dart";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
-import 'package:vitrinint/AppTheme.dart';
-import 'package:vitrinint/AppThemeNotifier.dart';
-import 'package:vitrinint/api/api_util.dart';
-import 'package:vitrinint/controllers/AddressController.dart';
-import 'package:vitrinint/controllers/HomeController.dart';
-import 'package:vitrinint/controllers/StoryController.dart';
-import 'package:vitrinint/controllers/carousel_controller.dart';
-import 'package:vitrinint/controllers/story_index_controller.dart';
-import 'package:vitrinint/controllers/story_index_linear_progress_value_controller.dart';
-import 'package:vitrinint/models/AdBanner.dart';
-import 'package:vitrinint/models/Category.dart';
-import 'package:vitrinint/models/MyResponse.dart';
-import 'package:vitrinint/models/Shop.dart';
-import 'package:vitrinint/models/Stories.dart';
-import 'package:vitrinint/models/UserAddress.dart';
-import 'package:vitrinint/services/AppLocalizations.dart';
-import 'package:vitrinint/utils/ColorUtils.dart';
-import 'package:vitrinint/utils/Generator.dart';
-import 'package:vitrinint/utils/SizeConfig.dart';
-import 'package:vitrinint/utils/TextUtils.dart';
-import 'package:vitrinint/views/CategoryProductScreen.dart';
-import 'package:vitrinint/views/ShopScreen.dart';
-import 'package:vitrinint/views/addresses/AddAddressScreen.dart';
+import 'package:story_view/controller/story_controller.dart';
+import 'package:story_view/story_view.dart';
+import '../AppTheme.dart';
+import '../AppThemeNotifier.dart';
+import '../api/api_util.dart';
+import '../controllers/AddressController.dart';
+import '../controllers/StoryController.dart';
+import '../controllers/carousel_controller.dart';
+import '../controllers/story_index_controller.dart';
+
+import '../models/AdBanner.dart';
+import '../models/Category.dart';
+import '../models/MyResponse.dart';
+import '../models/Shop.dart';
+import '../models/Stories.dart';
+import '../models/UserAddress.dart';
+import '../utils/SizeConfig.dart';
+import 'ShopScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -70,16 +60,13 @@ class _StoryScreenState extends State<StoryScreen> {
   List<UserAddress>? userAddresses;
   List<Category>? categories;
   List<Stories>? stories;
-
+  List<StoryItem> storyItems = [];
   List<AdBanner>? banners;
 
   int selectedAddress = -1;
 
   @override
   void initState() {
-    LinearProgressValueController _progressController =
-        LinearProgressValueController();
-
     super.initState();
     _loadAddresses();
   }
@@ -125,6 +112,15 @@ class _StoryScreenState extends State<StoryScreen> {
     }
   }
 
+  void loadStoryImages(so, List<StoryItem> targetList) {
+    for (var i = 0; i < stories!.length; i++) {
+      storyItems.add(StoryItem.pageImage(
+          duration: Duration(seconds: 10),
+          url: stories![i].storyImage,
+          controller: _storyController));
+    }
+  }
+
   _loadStoryData() async {
     if (selectedAddress == -1) return;
     if (mounted) {
@@ -134,9 +130,10 @@ class _StoryScreenState extends State<StoryScreen> {
     }
 
     MyResponse<Map<String, dynamic>> myResponse =
-        await StoryController.getStoryData(widget.shopId);
+        await OldStoryController.getStoryData(widget.shopId);
     if (myResponse.success) {
-      stories = myResponse.data![StoryController.stories];
+      stories = myResponse.data![OldStoryController.stories];
+      loadStoryImages(stories, storyItems);
     } else {
       ApiUtil.checkRedirectNavigation(context, myResponse.responseCode);
       showMessage(message: myResponse.errorText);
@@ -197,21 +194,10 @@ class _StoryScreenState extends State<StoryScreen> {
 
   _buildBody() {
     if (stories != null) {
-      int storyCount = stories!.length;
-      int spaceCount = storyCount - 1;
-      double width = (98 - 0.4 * spaceCount) / storyCount;
       return Center(
         child: Stack(
           children: [
             _storiesWidget(stories!),
-            Positioned(
-              top: 2.h,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 1.w),
-                child: Container(
-                    height: 0.5.h, width: 100.w, child: _buildPageIndex(width)),
-              ),
-            ),
             _buildExitButton(),
             _buildGoToShopButton()
           ],
@@ -225,61 +211,14 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   IndexController _indexController = IndexController();
-  ListView _buildPageIndex(double width) {
-    return ListView.separated(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      separatorBuilder: (context, index) => SizedBox(
-        width: 0.4.w,
-      ),
-      scrollDirection: Axis.horizontal,
-      itemCount: stories!.length,
-      itemBuilder: (context, index) {
-        return Obx(() {
-          return Ink(
-            height: 1.h,
-            width: width.w,
-            decoration: BoxDecoration(
-                color: _indexController.currentIndex == index
-                    ? Colors.white
-                    : Colors.grey,
-                borderRadius: BorderRadius.all(Radius.circular(0.1.w))),
-          );
-        });
-      },
-    );
-  }
 
   Positioned _buildGoToShopButton() {
     return Positioned(
-      top: 5.h,
-      left: 3.w,
-      child: Container(
-        alignment: Alignment.center,
-        height: 5.7.h,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              transform: GradientRotation(4),
-              colors: [Colors.white, Colors.white]),
-          borderRadius: BorderRadius.all(Radius.circular(2.w)),
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-        ),
-        child: TextButton(
-          onPressed: () => Get.off(() => ShopScreen(
-                shopId: stories![0].shopId,
-              )),
-          child: Text(
-            "Mağazaya Git",
-            style: TextStyle(
-                fontSize: 11.sp,
-                color: Colors.blue[700],
-                fontWeight: FontWeight.w700,
-                decoration: TextDecoration.underline),
-          ),
-        ),
-      ),
-    );
+        top: 5.h,
+        left: 3.w,
+        child: Container(
+          child: Image.network(stories![0].shopImage),
+        ));
   }
 
   Positioned _buildExitButton() {
@@ -309,73 +248,16 @@ class _StoryScreenState extends State<StoryScreen> {
     );
   }
 
-  final _carouselController = Get.put(CarouselIndexController());
+  StoryController _storyController = StoryController();
   _storiesWidget(List<Stories> stories) {
-    return GestureDetector(
-      onTapDown: _buildOnTapDownMethod,
-      onVerticalDragUpdate: (details) {
-        if (details.delta.distance > 5) {
-          Navigator.of(context).pop();
-        }
-      },
-      child: Container(
-        width: 100.w,
-        height: 100.h,
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.2.w, color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 1.w),
-        child: CarouselSlider.builder(
-          itemCount: stories.length,
-          itemBuilder: (context, index, realIndex) {
-            return Obx(() {
-              return Image.network(
-                stories[_indexController.currentIndex].storyImage,
-                fit: BoxFit.contain,
-              );
-            });
-          },
-          options: _buildCarouselOptions(stories),
-        ),
+    return Container(
+      width: 100.w,
+      height: 100.h,
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.2.w, color: Colors.white),
       ),
+      padding: EdgeInsets.symmetric(horizontal: 1.w),
+      child: StoryView(controller: _storyController, storyItems: storyItems),
     );
   }
-
-  CarouselOptions _buildCarouselOptions(List<Stories> stories) {
-    return CarouselOptions(
-        scrollPhysics: NeverScrollableScrollPhysics(),
-        pauseAutoPlayOnManualNavigate: false,
-        onPageChanged: (index, __) {
-          if (_indexController.currentIndex < stories.length - 1) {
-            _indexController.currentIndex++;
-          }
-          if (_indexController.currentIndex == stories.length - 1) {
-            Future.delayed(Duration(seconds: 10), () => Navigator.pop(context));
-          }
-        },
-        height: 80.h,
-        autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-        enableInfiniteScroll: false,
-        autoPlayAnimationDuration: Duration(seconds: 2),
-        autoPlayInterval: Duration(seconds: 12),
-        autoPlay: true,
-        pageSnapping: false,
-        viewportFraction: 1);
-  }
-
-  void _buildOnTapDownMethod(TapDownDetails details) =>
-      (TapDownDetails details) {
-        final double screenWith = MediaQuery.of(context).size.width;
-        final double dx = details.globalPosition.dx;
-        print(dx);
-
-        if (dx < screenWith / 3) {
-          print("dx< sw/3");
-          return null;
-        } else if (dx > 2 * screenWith / 3) {
-          _indexController.currentIndex++;
-          print(_indexController.currentIndex);
-          _carouselController.carouselIndex++;
-        }
-      };
 }

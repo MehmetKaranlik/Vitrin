@@ -1,4 +1,4 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 class ProductImage {
   int id;
@@ -8,7 +8,7 @@ class ProductImage {
   ProductImage(this.id, this.url, this.productId);
 
   static ProductImage fromJson(Map<String, dynamic> jsonObject) {
-    int id = int.parse(jsonObject['id'].toString()) ;
+    int id = int.parse(jsonObject['id'].toString());
     String url = TextUtils.getImageUrl(jsonObject['url'].toString());
     int productId = int.parse(jsonObject['product_id'].toString());
 

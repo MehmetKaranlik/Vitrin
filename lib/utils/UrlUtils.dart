@@ -1,4 +1,4 @@
-import 'package:vitrinint/api/api_util.dart';
+import '../api/api_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlUtils {
@@ -10,8 +10,7 @@ class UrlUtils {
   String youtubeUrl = "https://www.youtube.com";
 
   * */
-  
-  
+
   static openDocsDownloadPage() {
     openUrl("https://coderthemes.com/emall/downloads.html");
   }

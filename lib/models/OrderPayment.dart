@@ -1,12 +1,10 @@
-
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
 class OrderPayment {
   int id;
-  int  paymentType;
+  int paymentType;
   bool success;
   String paymentId;
-
 
   OrderPayment(this.id, this.paymentType, this.success, this.paymentId);
 

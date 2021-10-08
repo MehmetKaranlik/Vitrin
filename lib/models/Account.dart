@@ -1,8 +1,6 @@
-import 'package:vitrinint/utils/TextUtils.dart';
+import '../utils/TextUtils.dart';
 
-class Account{
-
-
+class Account {
   String? name, email, token, avatarUrl;
 
   Account(this.name, this.email, this.token, this.avatarUrl);
@@ -14,9 +12,6 @@ class Account{
   }
 
   getAvatarUrl() {
-    return TextUtils.getImageUrl(avatarUrl??"");
+    return TextUtils.getImageUrl(avatarUrl ?? "");
   }
-
-
-
 }
