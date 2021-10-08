@@ -1,8 +1,9 @@
 import 'dart:async';
-
+import "package:carousel_slider/carousel_controller.dart";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:sizer/sizer.dart';
@@ -12,7 +13,9 @@ import 'package:vitrinint/api/api_util.dart';
 import 'package:vitrinint/controllers/AddressController.dart';
 import 'package:vitrinint/controllers/HomeController.dart';
 import 'package:vitrinint/controllers/StoryController.dart';
+import 'package:vitrinint/controllers/carousel_controller.dart';
 import 'package:vitrinint/controllers/story_index_controller.dart';
+import 'package:vitrinint/controllers/story_index_linear_progress_value_controller.dart';
 import 'package:vitrinint/models/AdBanner.dart';
 import 'package:vitrinint/models/Category.dart';
 import 'package:vitrinint/models/MyResponse.dart';
@@ -74,6 +77,9 @@ class _StoryScreenState extends State<StoryScreen> {
 
   @override
   void initState() {
+    LinearProgressValueController _progressController =
+        LinearProgressValueController();
+
     super.initState();
     _loadAddresses();
   }
@@ -199,7 +205,7 @@ class _StoryScreenState extends State<StoryScreen> {
           children: [
             _storiesWidget(stories!),
             Positioned(
-              top: 7.h,
+              top: 2.h,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 1.w),
                 child: Container(
@@ -246,7 +252,7 @@ class _StoryScreenState extends State<StoryScreen> {
 
   Positioned _buildGoToShopButton() {
     return Positioned(
-      top: 1.h,
+      top: 5.h,
       left: 3.w,
       child: Container(
         alignment: Alignment.center,
@@ -278,6 +284,7 @@ class _StoryScreenState extends State<StoryScreen> {
 
   Positioned _buildExitButton() {
     return Positioned(
+      top: 5.w,
       right: 3.w,
       child: IconButton(
         onPressed: () => Navigator.pop(context),
@@ -302,13 +309,12 @@ class _StoryScreenState extends State<StoryScreen> {
     );
   }
 
+  final _carouselController = Get.put(CarouselIndexController());
   _storiesWidget(List<Stories> stories) {
     return GestureDetector(
-      onTap: () {},
+      onTapDown: _buildOnTapDownMethod,
       onVerticalDragUpdate: (details) {
-        print(details.delta.distance);
-        if (details.delta.distance > 10) {
-          print('sa');
+        if (details.delta.distance > 5) {
           Navigator.of(context).pop();
         }
       },
@@ -322,58 +328,54 @@ class _StoryScreenState extends State<StoryScreen> {
         child: CarouselSlider.builder(
           itemCount: stories.length,
           itemBuilder: (context, index, realIndex) {
-            return Image.network(
-              stories[index].storyImage,
-              fit: BoxFit.contain,
-            );
+            return Obx(() {
+              return Image.network(
+                stories[_indexController.currentIndex].storyImage,
+                fit: BoxFit.contain,
+              );
+            });
           },
-          options: CarouselOptions(
-              pauseAutoPlayOnManualNavigate: false,
-              onPageChanged: (_, __) {
-                _indexController.currentIndex++;
-              },
-              height: 80.h,
-              autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-              enableInfiniteScroll: false,
-              autoPlayAnimationDuration: Duration(seconds: 2),
-              autoPlayInterval: Duration(seconds: 12),
-              autoPlay: true,
-              pageSnapping: false,
-              viewportFraction: 1),
+          options: _buildCarouselOptions(stories),
         ),
       ),
     );
-
-    /*(
-        onPageChanged: ()=>  _currentPage++,
-        pageController: _pageController,
-        gaplessPlayback: true,
-        enableRotation: true,
-        customSize: Size.fromHeight(80.h),
-        itemCount: stories.length,
-        builder: (context, index) {
-          return PhotoViewGalleryPageOptions(
-            imageProvider: NetworkImage(
-              stories[index].storyImage,
-            ),
-            minScale: PhotoViewComputedScale.contained * 0.8,
-            maxScale: PhotoViewComputedScale.covered * 2,
-          );
-        },
-        scrollPhysics: BouncingScrollPhysics(),
-        backgroundDecoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-        ),
-        loadingBuilder: (context, event) => Center(
-          child: Container(
-            width: 30.0,
-            height: 30.0,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.blueAccent,
-              value: event == null ? 0 : event.cumulativeBytesLoaded / 3,
-            ),
-          ),
-        ),
-      ),*/
   }
+
+  CarouselOptions _buildCarouselOptions(List<Stories> stories) {
+    return CarouselOptions(
+        scrollPhysics: NeverScrollableScrollPhysics(),
+        pauseAutoPlayOnManualNavigate: false,
+        onPageChanged: (index, __) {
+          if (_indexController.currentIndex < stories.length - 1) {
+            _indexController.currentIndex++;
+          }
+          if (_indexController.currentIndex == stories.length - 1) {
+            Future.delayed(Duration(seconds: 10), () => Navigator.pop(context));
+          }
+        },
+        height: 80.h,
+        autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+        enableInfiniteScroll: false,
+        autoPlayAnimationDuration: Duration(seconds: 2),
+        autoPlayInterval: Duration(seconds: 12),
+        autoPlay: true,
+        pageSnapping: false,
+        viewportFraction: 1);
+  }
+
+  void _buildOnTapDownMethod(TapDownDetails details) =>
+      (TapDownDetails details) {
+        final double screenWith = MediaQuery.of(context).size.width;
+        final double dx = details.globalPosition.dx;
+        print(dx);
+
+        if (dx < screenWith / 3) {
+          print("dx< sw/3");
+          return null;
+        } else if (dx > 2 * screenWith / 3) {
+          _indexController.currentIndex++;
+          print(_indexController.currentIndex);
+          _carouselController.carouselIndex++;
+        }
+      };
 }
