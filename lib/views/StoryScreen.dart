@@ -215,9 +215,24 @@ class _StoryScreenState extends State<StoryScreen> {
   Positioned _buildGoToShopButton() {
     return Positioned(
         top: 5.h,
-        left: 3.w,
-        child: Container(
-          child: Image.network(stories![0].shopImage),
+        left: 5.w,
+        child: GestureDetector(
+          onTap: () => Get.off(() => ShopScreen(
+                shopId: stories![0].shopId,
+              )),
+          child: Container(
+            height: 10.h,
+            width: 10.h,
+            child: Image.network(
+              stories![0].shopImage,
+              fit: BoxFit.fitWidth,
+            ),
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Colors.blue[700]!,
+              width: 0.3.w,
+            )),
+          ),
         ));
   }
 
@@ -257,7 +272,11 @@ class _StoryScreenState extends State<StoryScreen> {
         border: Border.all(width: 0.2.w, color: Colors.white),
       ),
       padding: EdgeInsets.symmetric(horizontal: 1.w),
-      child: StoryView(controller: _storyController, storyItems: storyItems),
+      child: StoryView(
+        controller: _storyController,
+        storyItems: storyItems,
+        onComplete: () => Navigator.pop(context),
+      ),
     );
   }
 }

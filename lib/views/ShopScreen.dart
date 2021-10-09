@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vitrinint/views/HomeScreen.dart';
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
@@ -137,7 +139,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 elevation: 0,
                 leading: InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.off(() => HomeScreen());
                   },
                   child: Icon(MdiIcons.chevronLeft),
                 ),
