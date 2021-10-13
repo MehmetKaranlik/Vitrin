@@ -1,18 +1,19 @@
 import 'dart:async';
-import 'package:carousel_slider/carousel_slider.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/story_view.dart';
+
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
 import '../controllers/AddressController.dart';
 import '../controllers/StoryController.dart';
-import '../controllers/carousel_controller.dart';
 import '../controllers/story_index_controller.dart';
-
 import '../models/AdBanner.dart';
 import '../models/Category.dart';
 import '../models/MyResponse.dart';
@@ -21,8 +22,6 @@ import '../models/Stories.dart';
 import '../models/UserAddress.dart';
 import '../utils/SizeConfig.dart';
 import 'ShopScreen.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class StoryScreen extends StatefulWidget {
   final int? shopId;

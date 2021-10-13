@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
 import '../controllers/AppDataController.dart';
-import '../controllers/AuthController.dart';
 import '../controllers/CategoryController.dart';
 import '../controllers/ProductController.dart';
-import '../controllers/StoryController.dart';
 import '../models/AppData.dart';
 import '../models/Category.dart';
 import '../models/Filter.dart';
@@ -15,18 +18,10 @@ import '../models/Product.dart';
 import '../models/Stories.dart';
 import '../models/SubCategory.dart';
 import '../services/AppLocalizations.dart';
-import '../utils/ColorUtils.dart';
 import '../utils/SizeConfig.dart';
+import 'CategoryProductScreen.dart';
 import 'LoadingScreens.dart';
 import 'ProductScreen.dart';
-import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:hexcolor/hexcolor.dart';
-
-import 'CategoryProductScreen.dart';
-import 'MaintenanceScreen.dart';
-import 'ShopScreen.dart';
 
 class SearchScreen extends StatefulWidget {
   final String? mainColor;
@@ -304,6 +299,9 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       );
+
+      // this.products!.sort((b, a) =>
+      //     b.productItems![0].price.compareTo(a.productItems![0].price));
     }
 
     return GridView.count(

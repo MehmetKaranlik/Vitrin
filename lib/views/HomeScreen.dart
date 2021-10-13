@@ -1,7 +1,13 @@
 import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
@@ -18,15 +24,11 @@ import '../models/UserAddress.dart';
 import '../services/AppLocalizations.dart';
 import '../utils/SizeConfig.dart';
 import '../utils/TextUtils.dart';
-import 'ShopScreen.dart';
-import 'addresses/AddAddressScreen.dart';
-import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
-import 'StoryScreen.dart';
-import 'addresses/HomeFilterScreen.dart';
-import 'package:sizer/sizer.dart';
 import '../widgets/sized_place_holder.dart';
+import 'ShopScreen.dart';
+import 'StoryScreen.dart';
+import 'addresses/AddAddressScreen.dart';
+import 'addresses/HomeFilterScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   final double? myDistance;
@@ -129,8 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _getLocation() async {
-    position = await Geolocator.getCurrentPosition();
-    setState(() {});
+    if (mounted) {
+      position = await Geolocator.getCurrentPosition();
+      setState(() {});
+    }
   }
 
   Widget _calculateKm(lat1, long1, lat2, long2) {

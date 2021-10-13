@@ -1,36 +1,22 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
-import '../api/currency_api.dart';
-import '../controllers/CartController.dart';
-import '../controllers/FavoriteController.dart';
 import '../controllers/ProductController.dart';
 import '../controllers/ShopController.dart';
 import '../models/MyResponse.dart';
 import '../models/Product.dart';
-import '../models/ProductImage.dart';
 import '../models/Shop.dart';
-import '../services/AppLocalizations.dart';
-import '../utils/Generator.dart';
-import '../utils/ProductUtils.dart';
 import '../utils/SizeConfig.dart';
-import '../utils/TextUtils.dart';
-import '../utils/UrlUtils.dart';
-import 'CartScreen.dart';
 import 'LoadingScreens.dart';
-import 'ShopScreen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
-
-import 'StoryScreen.dart';
 
 class ImagesScreen extends StatefulWidget {
   final int productId;

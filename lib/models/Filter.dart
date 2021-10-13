@@ -1,6 +1,7 @@
 class Filter {
   late List<int> categories;
   late List<int> subCategories;
+  late
   String name = "";
   late bool isInOffer;
 

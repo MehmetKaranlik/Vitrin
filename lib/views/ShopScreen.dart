@@ -1,14 +1,16 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:vitrinint/views/AppScreen.dart';
-import 'package:vitrinint/views/HomeScreen.dart';
+
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
-import '../api/currency_api.dart';
 import '../controllers/AppDataController.dart';
 import '../controllers/ShopController.dart';
 import '../models/AppData.dart';
@@ -18,10 +20,7 @@ import '../models/Shop.dart';
 import '../services/AppLocalizations.dart';
 import '../utils/SizeConfig.dart';
 import '../utils/UrlUtils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
+import 'AppScreen.dart';
 import 'LoadingScreens.dart';
 import 'ProductScreen.dart';
 

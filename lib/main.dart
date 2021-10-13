@@ -1,26 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'controllers/AppDataController.dart';
+
+import 'AppTheme.dart';
+import 'AppThemeNotifier.dart';
 import 'controllers/AuthController.dart';
-import 'models/AppData.dart';
-import 'models/MyResponse.dart';
 import 'services/AppLocalizations.dart';
 import 'services/PushNotificationsManager.dart';
 import 'utils/SizeConfig.dart';
 import 'views/AppScreen.dart';
 import 'views/BlockedScreen.dart';
-import 'views/MaintenanceScreen.dart';
-import 'views/SearchScreen.dart';
 import 'views/auth/LoginScreen.dart';
 import 'views/auth/OTPVerificationScreen.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-
-import 'AppTheme.dart';
-import 'AppThemeNotifier.dart';
-import 'api/api_util.dart';
 
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
