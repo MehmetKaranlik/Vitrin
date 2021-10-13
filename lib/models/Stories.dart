@@ -29,8 +29,7 @@ class Stories {
     for (int i = 0; i < jsonArray.length; i++) {
       list.add(Stories.fromJson(jsonArray[i]));
     }
-    // print(jsonArray);
-    print(list.length);
+
     return list;
   }
 

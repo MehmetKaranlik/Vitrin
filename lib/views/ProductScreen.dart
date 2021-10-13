@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
@@ -211,54 +212,31 @@ class _ProductScreenState extends State<ProductScreen> {
 
   _buildProductItems() {
     return Container(
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              margin: Spacing.left(16),
-              child: ProductUtils.singleProductItemOption(
+        child: Row(children: [
+      Expanded(
+        child: Container(
+          height: 8.h,
+          width: 80.w,
+          margin: Spacing.left(16),
+          child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return ProductUtils.singleProductItemOption(
                   product!.productItems![selectedItem],
                   themeData,
-                  customAppTheme),
-            ),
-          ),
-          PopupMenuButton(
-            key: _productItemSelectKey,
-            icon: Icon(
-              MdiIcons.chevronDown,
-              color: themeData!.colorScheme.onBackground,
-              size: MySize.size20,
-            ),
-            onSelected: (dynamic value) async {
-              setState(() {
-                selectedItem = value;
-              });
+                  customAppTheme);
             },
-            itemBuilder: (BuildContext context) {
-              var list = <PopupMenuEntry<Object>>[];
-              for (int i = 0; i < product!.productItems!.length; i++) {
-                list.add(PopupMenuItem(
-                  value: i,
-                  child: Container(
-                      margin: Spacing.vertical(2),
-                      child: ProductUtils.singleProductItemOption(
-                          product!.productItems![i],
-                          themeData,
-                          customAppTheme)),
-                ));
-                list.add(
-                  PopupMenuDivider(
-                    height: 10,
-                  ),
-                );
-              }
-              return list;
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 1.w,
+              );
             },
-            color: themeData!.backgroundColor,
+            itemCount: product!.productItems!.length,
           ),
-        ],
-      ),
-    );
+        ),
+      )
+    ]));
   }
 
   @override

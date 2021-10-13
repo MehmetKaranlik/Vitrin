@@ -100,17 +100,13 @@ class _AppScreenState extends State<AppScreen>
   }
 
   _buildFloatingActionButton() {
-    return SizedBox(
-      width: 15.w,
-      height: 15.w,
-      child: Material(
-        child: FloatingActionButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HomeFilterScreen())),
-          child: Icon(
-            Icons.location_on_outlined,
-            size: 6.5.w,
-          ),
+    return Material(
+      child: FloatingActionButton(
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => HomeFilterScreen())),
+        child: Icon(
+          Icons.location_on_outlined,
+          size: 6.5.w,
         ),
       ),
     );

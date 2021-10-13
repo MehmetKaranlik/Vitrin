@@ -266,21 +266,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ],
           ),
         ),
-        Positioned(
-          right: 12,
-          top: 12,
-          child: Icon(
-            product.isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
-            color: product.isFavorite
-                ? appdata == null
-                    ? Colors.purple
-                    : HexColor(appdata!.first.mainColor)
-                : appdata == null
-                    ? Colors.purple
-                    : HexColor(appdata!.first.secondColor),
-            size: 22,
-          ),
-        )
       ],
     );
   }

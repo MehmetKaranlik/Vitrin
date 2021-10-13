@@ -286,7 +286,7 @@ class _SearchScreenState extends State<SearchScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProductScreen(
-                  productId: products[i].id,
+                  productId: products[i].shopId,
                 ),
               ),
             );

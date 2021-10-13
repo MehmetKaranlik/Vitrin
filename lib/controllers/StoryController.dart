@@ -25,8 +25,6 @@ class OldStoryController {
 
     Map<String, String> headers =
         ApiUtil.getHeader(requestType: RequestType.GetWithAuth, token: token);
-    /*print(
-        ApiUtil.getHeader(requestType: RequestType.GetWithAuth, token: token));*/
 
     //Check Internet
     bool isConnected = await InternetUtils.checkConnection();
@@ -41,7 +39,7 @@ class OldStoryController {
           MyResponse(response.statusCode);
       if (ApiUtil.isResponseSuccess(response.statusCode)) {
         myResponse.success = true;
-        // print("Response Body:" + response.body);
+
         dynamic decodedData = json.decode(response.body);
         Map<String, dynamic> data = {
           stories: Stories.getListFromJson(decodedData),

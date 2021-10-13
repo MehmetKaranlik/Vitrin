@@ -12,7 +12,7 @@ class Network {
         headers: headers,
         body: body,
         encoding: encoding);
-    print(changeUrl(url));
+
     return NetworkResponse(response.body, response.statusCode);
   }
 
@@ -22,7 +22,7 @@ class Network {
       Uri.parse(changeUrl(url)),
       headers: headers,
     );
-    print(changeUrl(url));
+
     return NetworkResponse(response.body, response.statusCode);
   }
 
@@ -36,7 +36,7 @@ class Network {
 
   static changeUrl(String url) {
     if (url[url.length - 1] == "/") return url.substring(0, url.length - 1);
-    print(url);
+
     return url;
   }
 }
