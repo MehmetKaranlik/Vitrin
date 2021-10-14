@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:sizer/sizer.dart';
+import 'package:vitrinint/widgets/sized_place_holder.dart';
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
@@ -35,7 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
   //Theme Data
   ThemeData? themeData;
   CustomAppTheme? customAppTheme;
-
+  bool? isSliderActive;
   //Global Keys
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
@@ -270,10 +271,16 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  List<Product> priceFilteredProductList = [];
   _showProducts(List<Product> products) {
     List<Widget> listWidgets = [];
 
-    for (int i = 0; i < products.length; i++) {
+    for (int i = 0;
+        isSliderActive == true
+            ? i < priceFilteredProductList.length
+            : i < products.length;
+        i++) {
+      isSliderActive == true ? print(priceFilteredProductList.length) : null;
       listWidgets.add(
         InkWell(
           onTap: () async {
@@ -281,27 +288,30 @@ class _SearchScreenState extends State<SearchScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProductScreen(
-                  productId: products[i].shopId,
+                  productId: isSliderActive == true
+                      ? priceFilteredProductList[i].shopId
+                      : products[i].shopId,
                 ),
               ),
             );
             if (newProduct != null) {
               setState(
                 () {
-                  products[i] = newProduct;
+                  isSliderActive == true
+                      ? priceFilteredProductList[i] = newProduct
+                      : products[i] = newProduct;
                 },
               );
             }
           },
           child: Container(
             margin: Spacing.bottom(16),
-            child: _singleProduct(products[i]),
+            child: _singleProduct(isSliderActive == true
+                ? priceFilteredProductList[i]
+                : products[i]),
           ),
         ),
       );
-
-      // this.products!.sort((b, a) =>
-      //     b.productItems![0].price.compareTo(a.productItems![0].price));
     }
 
     return GridView.count(
@@ -550,73 +560,196 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  _filterPriceFilteredProduct(value) {
+    for (var i = 0; i < products!.length; i++) {
+      if (products![i].productItems![0].price < value) {
+        priceFilteredProductList.add(products![i]);
+      }
+    }
+  }
+
   _endDrawer() {
+    bool _princeAscending = false;
+    bool _princeDescending = false;
+    bool _distanceAscending = false;
+    bool _distanceDescending = false;
+    double _sliderValue = 0;
     return Container(
       width: MediaQuery.of(context).size.width * 0.75,
       color: themeData!.backgroundColor,
       child: ListView(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    Translator.translate("filter").toUpperCase(),
-                    style: AppTheme.getTextStyle(themeData!.textTheme.subtitle1,
-                        fontWeight: 700,
-                        color: appdata == null
-                            ? Colors.purple
-                            : HexColor(appdata!.first.mainColor)),
+            padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  Translator.translate("filter").toUpperCase(),
+                  style: AppTheme.getTextStyle(themeData!.textTheme.subtitle1,
+                      fontWeight: 700,
+                      color: appdata == null
+                          ? Colors.purple
+                          : HexColor(appdata!.first.mainColor)),
+                ),
+                InkWell(
+                  onTap: () {
+                    _clearFilter();
+                  },
+                  child: Text(
+                    Translator.translate("clear"),
+                    style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
+                        fontWeight: 500,
+                        color: themeData!.colorScheme.onBackground),
                   ),
-                  InkWell(
-                    onTap: () {
-                      _clearFilter();
-                    },
-                    child: Text(
-                      Translator.translate("clear"),
-                      style: AppTheme.getTextStyle(
-                          themeData!.textTheme.bodyText2,
-                          fontWeight: 500,
-                          color: themeData!.colorScheme.onBackground),
-                    ),
-                  ),
-                ],
-              )),
-          Container(
-            margin: Spacing.top(24),
-            child: ExpansionPanelList(
-              expandedHeaderPadding: Spacing.all(0) as EdgeInsets,
-              dividerColor: Colors.transparent,
-              expansionCallback: (int index, bool isExpanded) {
-                setState(() {
-                  _dataExpansionPanel[index] = !isExpanded;
-                });
-              },
-              animationDuration: Duration(milliseconds: 500),
-              children: <ExpansionPanel>[
-                ExpansionPanel(
-                    canTapOnHeader: true,
-                    headerBuilder: (BuildContext context, bool isExpanded) {
-                      return ListTile(
-                        title: Text(Translator.translate("category"),
-                            style: AppTheme.getTextStyle(
-                                themeData!.textTheme.bodyText1,
-                                color: isExpanded
-                                    ? appdata == null
-                                        ? Colors.purple
-                                        : HexColor(appdata!.first.mainColor)
-                                    : themeData!.colorScheme.onBackground,
-                                fontWeight: isExpanded ? 700 : 600)),
-                      );
-                    },
-                    body: Container(
-                        padding: Spacing.fromLTRB(16, 0, 0, 0),
-                        child: categoryFilterList()),
-                    isExpanded: _dataExpansionPanel[0]),
+                ),
               ],
             ),
+          ),
+          StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                margin: Spacing.top(15.w),
+                child: Row(children: [
+                  Material(
+                    child: Slider(
+                      inactiveColor: themeData!.colorScheme.onBackground,
+                      divisions: 50,
+                      min: 0,
+                      max: 1000,
+                      label: "Fiyat",
+                      value: _sliderValue,
+                      onChanged: (value) {
+                        setState(() {
+                          _sliderValue = value;
+                        });
+                      },
+                    ),
+                  ),
+                  Ink(
+                      color: Colors.red,
+                      child: Text("₺" + _sliderValue.toString())),
+                ]),
+              );
+            },
+          ),
+          Container(
+            margin: Spacing.top(5.w),
+            child: Row(
+              children: [
+                SizedPlaceHolder(
+                    color: Colors.transparent, height: 0, width: 42.w),
+                Text("Artan"),
+                SizedPlaceHolder(
+                    color: Colors.transparent, height: 0, width: 3.w),
+                Text("Azalan"),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
+            margin: Spacing.top(0.w),
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Fiyata Göre Sırala"),
+                    SizedPlaceHolder(
+                        color: Colors.transparent, height: 0, width: 6.w),
+                    Checkbox(
+                        visualDensity: VisualDensity.compact,
+                        activeColor: themeData!.colorScheme.primary,
+                        value: _princeAscending,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _princeAscending = value!;
+                            _princeDescending = false;
+                          });
+                        }),
+                    Checkbox(
+                        visualDensity: VisualDensity.compact,
+                        activeColor: themeData!.colorScheme.primary,
+                        value: _princeDescending,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _princeDescending = value!;
+                            _princeAscending = false;
+                          });
+                        }),
+                  ],
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
+            margin: Spacing.top(5.w),
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Uzaklığa göre sırala"),
+                    SizedPlaceHolder(
+                        color: Colors.transparent, height: 0, width: 3.w),
+                    Checkbox(
+                        visualDensity: VisualDensity.compact,
+                        value: _distanceAscending,
+                        activeColor: themeData!.colorScheme.primary,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _distanceAscending = value!;
+                            _distanceDescending = false;
+                          });
+                        }),
+                    Checkbox(
+                        visualDensity: VisualDensity.compact,
+                        value: _distanceDescending,
+                        activeColor: themeData!.colorScheme.primary,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _distanceDescending = value!;
+                            _distanceAscending = false;
+                          });
+                        })
+                  ],
+                );
+              },
+            ),
+
+            // child: ExpansionPanelList(
+            //   expandedHeaderPadding: Spacing.all(0) as EdgeInsets,
+            //   dividerColor: Colors.transparent,
+            //   expansionCallback: (int index, bool isExpanded) {
+            //     setState(() {
+            //       _dataExpansionPanel[index] = !isExpanded;
+            //     });
+            //   },
+            //   animationDuration: Duration(milliseconds: 500),
+            //   children: <ExpansionPanel>[
+            //     ExpansionPanel(
+            //         canTapOnHeader: true,
+            //         headerBuilder: (BuildContext context, bool isExpanded) {
+            //           return ListTile(
+            //             title: Text(Translator.translate("category"),
+            //                 style: AppTheme.getTextStyle(
+            //                     themeData!.textTheme.bodyText1,
+            //                     color: isExpanded
+            //                         ? appdata == null
+            //                             ? Colors.purple
+            //                             : HexColor(appdata!.first.mainColor)
+            //                         : themeData!.colorScheme.onBackground,
+            //                     fontWeight: isExpanded ? 700 : 600)),
+            //           );
+            //         },
+            //         body: Container(
+            //             padding: Spacing.fromLTRB(16, 0, 0, 0),
+            //             child: categoryFilterList()),
+            //         isExpanded: _dataExpansionPanel[0]),
+            //   ],
+            // ),
           ),
           Container(
             margin: Spacing.fromLTRB(20, 8, 20, 0),
@@ -667,8 +800,41 @@ class _SearchScreenState extends State<SearchScreen> {
                           borderRadius: BorderRadius.circular(4),
                         ))),
                     onPressed: () {
+                      if (_sliderValue != 0) {
+                        priceFilteredProductList.clear();
+                        _filterPriceFilteredProduct(_sliderValue);
+                        setState(() {
+                          isSliderActive = true;
+                        });
+                        if (_princeAscending == true) {
+                          this.priceFilteredProductList.sort((b, a) => b
+                              .productItems![0].price
+                              .compareTo(a.productItems![0].price));
+                        }
+                        if (_princeDescending == true) {
+                          this.priceFilteredProductList.sort((b, a) => a
+                              .productItems![0].price
+                              .compareTo(b.productItems![0].price));
+                        }
+                      }
                       _scaffoldKey.currentState!.openDrawer();
-                      _filterProductData();
+                      if (_sliderValue == 0 && _princeAscending == true) {
+                        setState(() {
+                          this.products!.sort((b, a) => b.productItems![0].price
+                              .compareTo(a.productItems![0].price));
+                        });
+                      }
+                      if (_sliderValue == 0 && _princeDescending == true) {
+                        setState(() {
+                          this.products!.sort((b, a) => a.productItems![0].price
+                              .compareTo(b.productItems![0].price));
+                        });
+                      }
+                      if (_sliderValue == 0) {
+                        setState(() {
+                          isSliderActive = false;
+                        });
+                      }
                     },
                     child: Text(
                       Translator.translate("apply").toUpperCase(),
@@ -689,63 +855,71 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget categoryFilterList() {
-    List<Widget> list = [];
-    for (Category category in categories!) {
-      if (category.subCategories!.length != 0) {
-        list.add(Container(
-            margin: Spacing.left(4),
-            child: Text(
-              category.title,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )));
-
-        List<Widget> subCategoriesWidget = [];
-        for (SubCategory subCategory in category.subCategories!) {
-          subCategoriesWidget.add(Container(
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  filter.toggleSubCategory(subCategory.id);
-                });
-              },
-              child: Row(
-                children: <Widget>[
-                  Checkbox(
-                    visualDensity: VisualDensity.compact,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    value: filter.subCategories.contains(subCategory.id),
-                    activeColor: themeData!.colorScheme.primary,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        filter.toggleSubCategory(subCategory.id);
-                      });
-                    },
-                  ),
-                  Container(
-                      margin: Spacing.left(4),
-                      child: Text(
-                        subCategory.title,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
-                ],
-              ),
-            ),
-          ));
-        }
-
-        list.add(Container(
-          margin: Spacing.fromLTRB(16, 4, 0, 4),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: subCategoriesWidget,
-          ),
-        ));
-      }
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: list,
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text("data"),
     );
   }
+
+//   Widget categoryFilterList() {
+//     List<Widget> list = [];
+//     for (Category category in categories!) {
+//       if (category.subCategories!.length != 0) {
+//         list.add(Container(
+//             margin: Spacing.left(4),
+//             child: Text(
+//               category.title,
+//               style: TextStyle(fontWeight: FontWeight.bold),
+//             )));
+
+//         List<Widget> subCategoriesWidget = [];
+//         for (SubCategory subCategory in category.subCategories!) {
+//           subCategoriesWidget.add(Container(
+//             child: InkWell(
+//               onTap: () {
+//                 setState(() {
+//                   filter.toggleSubCategory(subCategory.id);
+//                 });
+//               },
+//               child: Row(
+//                 children: <Widget>[
+//                   Checkbox(
+//                     visualDensity: VisualDensity.compact,
+//                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+//                     value: filter.subCategories.contains(subCategory.id),
+//                     activeColor: themeData!.colorScheme.primary,
+//                     onChanged: (bool? value) {
+//                       setState(() {
+//                         filter.toggleSubCategory(subCategory.id);
+//                       });
+//                     },
+//                   ),
+//                   Container(
+//                       margin: Spacing.left(4),
+//                       child: Text(
+//                         subCategory.title,
+//                         style: TextStyle(fontWeight: FontWeight.bold),
+//                       ))
+//                 ],
+//               ),
+//             ),
+//           ));
+//         }
+
+//         list.add(Container(
+//           margin: Spacing.fromLTRB(16, 4, 0, 4),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: subCategoriesWidget,
+//           ),
+//         ));
+//       }
+//     }
+
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: list,
+//     );
+//   }
+// }
 }
