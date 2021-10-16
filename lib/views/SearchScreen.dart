@@ -103,8 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
         await ProductController.getFilteredProduct(filter);
 
     if (myResponseProduct.success) {
-      print(ApiUtil.MAIN_API_URL_DEV + ApiUtil.PRODUCTS);
-      print(myResponseProduct.data);
+      // print(myResponseProduct.data);
       products = myResponseProduct.data;
     } else {
       if (mounted) {
@@ -149,47 +148,52 @@ class _SearchScreenState extends State<SearchScreen> {
         themeData = AppTheme.getThemeFromThemeMode(themeType);
         customAppTheme = AppTheme.getCustomAppTheme(themeType);
         return MaterialApp(
-            scaffoldMessengerKey: _scaffoldMessengerKey,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
-            home: SafeArea(
-              child: Scaffold(
-                  backgroundColor: customAppTheme!.bgLayer1,
-                  resizeToAvoidBottomInset: false,
-                  endDrawer: _endDrawer(),
-                  key: _scaffoldKey,
-                  body: RefreshIndicator(
-                    onRefresh: _refresh,
-                    backgroundColor: customAppTheme!.bgLayer1,
-                    color: themeData!.colorScheme.primary,
-                    key: _refreshIndicatorKey,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 3,
-                          child: isInProgress
-                              ? LinearProgressIndicator(
-                                  minHeight: 3,
-                                )
-                              : Container(
-                                  height: 3,
-                                ),
-                        ),
-                        Expanded(
-                            child: Column(
-                          children: [
-                            searchBar(),
-                            _categoriesWidget(categories!),
-                            //_storiesWidget(stories!),
-                            Expanded(child: buildBody()),
-                          ],
-                        ))
-                      ],
-                    ),
-                  )),
-            ));
+          scaffoldMessengerKey: _scaffoldMessengerKey,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.getThemeFromThemeMode(value.themeMode()),
+          home: SafeArea(
+            child: _buildScaffold(),
+          ),
+        );
       },
     );
+  }
+
+  Scaffold _buildScaffold() {
+    return Scaffold(
+        backgroundColor: customAppTheme!.bgLayer1,
+        resizeToAvoidBottomInset: false,
+        endDrawer: _endDrawer(),
+        key: _scaffoldKey,
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          backgroundColor: customAppTheme!.bgLayer1,
+          color: themeData!.colorScheme.primary,
+          key: _refreshIndicatorKey,
+          child: Column(
+            children: [
+              Container(
+                height: 3,
+                child: isInProgress
+                    ? LinearProgressIndicator(
+                        minHeight: 3,
+                      )
+                    : Container(
+                        height: 3,
+                      ),
+              ),
+              Expanded(
+                  child: Column(
+                children: [
+                  searchBar(),
+                  _categoriesWidget(categories!),
+                  //_storiesWidget(stories!),
+                  Expanded(child: buildBody()),
+                ],
+              ))
+            ],
+          ),
+        ));
   }
 
   _categoriesWidget(List<Category> categories) {
@@ -609,25 +613,8 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  Translator.translate("filter").toUpperCase(),
-                  style: AppTheme.getTextStyle(themeData!.textTheme.subtitle1,
-                      fontWeight: 700,
-                      color: appdata == null
-                          ? Colors.purple
-                          : HexColor(appdata!.first.mainColor)),
-                ),
-                InkWell(
-                  onTap: () {
-                    _clearFilter();
-                  },
-                  child: Text(
-                    Translator.translate("clear"),
-                    style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
-                        fontWeight: 500,
-                        color: themeData!.colorScheme.onBackground),
-                  ),
-                ),
+                _buildFilterText(),
+                _buildFilterButton(),
               ],
             ),
           ),
@@ -658,19 +645,7 @@ class _SearchScreenState extends State<SearchScreen> {
               );
             },
           ),
-          Container(
-            margin: Spacing.top(5.w),
-            child: Row(
-              children: [
-                SizedPlaceHolder(
-                    color: Colors.transparent, height: 0, width: 42.w),
-                Text("Artan"),
-                SizedPlaceHolder(
-                    color: Colors.transparent, height: 0, width: 3.w),
-                Text("Azalan"),
-              ],
-            ),
-          ),
+          _filterCategoryLabel(),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             margin: Spacing.top(0.w),
@@ -743,27 +718,7 @@ class _SearchScreenState extends State<SearchScreen> {
               },
             ),
           ),
-          Container(
-            margin: Spacing.fromLTRB(20, 8, 20, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  Translator.translate("only_offer"),
-                  style: AppTheme.getTextStyle(themeData!.textTheme.bodyText1,
-                      color: themeData!.colorScheme.onBackground,
-                      fontWeight: 600),
-                ),
-                Switch(
-                    value: filter.isInOffer,
-                    onChanged: (value) {
-                      setState(() {
-                        filter.setIsInOffer(value);
-                      });
-                    })
-              ],
-            ),
-          ),
+          _buildOnlyOfferSwitch(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -781,71 +736,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ],
                   ),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            appdata == null
-                                ? Colors.purple
-                                : HexColor(appdata!.first.mainColor)),
-                        padding: MaterialStateProperty.all(Spacing.xy(24, 12)),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ))),
-                    onPressed: () {
-                      DrawerOptionsController().saveSliderValue(_sliderValue);
-                      DrawerOptionsController()
-                          .saveAscendingPriceValue(_princeAscending);
-                      DrawerOptionsController()
-                          .saveDescendingPriceValue(_princeDescending);
-                      DrawerOptionsController()
-                          .saveAscendingDistanceValue(_distanceAscending);
-                      DrawerOptionsController()
-                          .saveDescendingDistanceValue(_distanceDescending);
-                      if (_sliderValue != 0) {
-                        priceFilteredProductList.clear();
-                        _filterPriceFilteredProduct(_sliderValue);
-                        setState(() {
-                          isSliderActive = true;
-                        });
-                        if (_princeAscending == true) {
-                          this.priceFilteredProductList.sort((b, a) => b
-                              .productItems![0].price
-                              .compareTo(a.productItems![0].price));
-                        }
-                        if (_princeDescending == true) {
-                          this.priceFilteredProductList.sort((b, a) => a
-                              .productItems![0].price
-                              .compareTo(b.productItems![0].price));
-                        }
-                      }
-                      _scaffoldKey.currentState!.openDrawer();
-                      if (_sliderValue == 0 && _princeAscending == true) {
-                        setState(() {
-                          this.products!.sort((b, a) => b.productItems![0].price
-                              .compareTo(a.productItems![0].price));
-                        });
-                      }
-                      if (_sliderValue == 0 && _princeDescending == true) {
-                        setState(() {
-                          this.products!.sort((b, a) => a.productItems![0].price
-                              .compareTo(b.productItems![0].price));
-                        });
-                      }
-                      if (_sliderValue == 0) {
-                        setState(() {
-                          isSliderActive = false;
-                        });
-                      }
-                    },
-                    child: Text(
-                      Translator.translate("apply").toUpperCase(),
-                      style: AppTheme.getTextStyle(
-                          themeData!.textTheme.bodyText2,
-                          fontWeight: 600,
-                          color: themeData!.colorScheme.onPrimary,
-                          letterSpacing: 0.3),
-                    ),
-                  ),
+                  child: _buildApplyButton(
+                      _sliderValue,
+                      _princeAscending,
+                      _princeDescending,
+                      _distanceAscending,
+                      _distanceDescending),
                 ),
               ),
             ],
@@ -855,10 +751,142 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget categoryFilterList() {
+  InkWell _buildFilterButton() {
+    return InkWell(
+      onTap: () {
+        _clearFilter();
+      },
+      child: _buildClearText(),
+    );
+  }
+
+  Text _buildFilterText() {
+    return Text(
+      Translator.translate("filter").toUpperCase(),
+      style: AppTheme.getTextStyle(themeData!.textTheme.subtitle1,
+          fontWeight: 700,
+          color: appdata == null
+              ? Colors.purple
+              : HexColor(appdata!.first.mainColor)),
+    );
+  }
+
+  Text _buildClearText() {
+    return Text(
+      Translator.translate("clear"),
+      style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
+          fontWeight: 500, color: themeData!.colorScheme.onBackground),
+    );
+  }
+
+  ElevatedButton _buildApplyButton(
+      double _sliderValue,
+      bool _princeAscending,
+      bool _princeDescending,
+      bool _distanceAscending,
+      bool _distanceDescending) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(appdata == null
+              ? Colors.purple
+              : HexColor(appdata!.first.mainColor)),
+          padding: MaterialStateProperty.all(Spacing.xy(24, 12)),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ))),
+      onPressed: () {
+        DrawerOptionsController().saveSliderValue(_sliderValue);
+        DrawerOptionsController().saveAscendingPriceValue(_princeAscending);
+        DrawerOptionsController().saveDescendingPriceValue(_princeDescending);
+        DrawerOptionsController()
+            .saveAscendingDistanceValue(_distanceAscending);
+        DrawerOptionsController()
+            .saveDescendingDistanceValue(_distanceDescending);
+        if (_sliderValue != 0) {
+          priceFilteredProductList.clear();
+          _filterPriceFilteredProduct(_sliderValue);
+          setState(() {
+            isSliderActive = true;
+          });
+          if (_princeAscending == true) {
+            this.priceFilteredProductList.sort((b, a) =>
+                b.productItems![0].price.compareTo(a.productItems![0].price));
+          }
+          if (_princeDescending == true) {
+            this.priceFilteredProductList.sort((b, a) =>
+                a.productItems![0].price.compareTo(b.productItems![0].price));
+          }
+        }
+        _scaffoldKey.currentState!.openDrawer();
+        if (_sliderValue == 0 && _princeAscending == true) {
+          setState(() {
+            this.products!.sort((b, a) =>
+                b.productItems![0].price.compareTo(a.productItems![0].price));
+          });
+        }
+        if (_sliderValue == 0 && _princeDescending == true) {
+          setState(() {
+            this.products!.sort((b, a) =>
+                a.productItems![0].price.compareTo(b.productItems![0].price));
+          });
+        }
+        if (_sliderValue == 0) {
+          setState(() {
+            isSliderActive = false;
+          });
+        }
+      },
+      child: Text(
+        Translator.translate("apply").toUpperCase(),
+        style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
+            fontWeight: 600,
+            color: themeData!.colorScheme.onPrimary,
+            letterSpacing: 0.3),
+      ),
+    );
+  }
+
+  Container _buildOnlyOfferSwitch() {
+    return Container(
+      margin: Spacing.fromLTRB(20, 8, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            Translator.translate("only_offer"),
+            style: AppTheme.getTextStyle(themeData!.textTheme.bodyText1,
+                color: themeData!.colorScheme.onBackground, fontWeight: 600),
+          ),
+          Switch(
+              value: filter.isInOffer,
+              onChanged: (value) {
+                setState(() {
+                  filter.setIsInOffer(value);
+                });
+              })
+        ],
+      ),
+    );
+  }
+
+  Container _filterCategoryLabel() {
+    return Container(
+      margin: Spacing.top(5.w),
+      child: Row(
+        children: [
+          SizedPlaceHolder(color: Colors.transparent, height: 0, width: 42.w),
+          Text("Artan"),
+          SizedPlaceHolder(color: Colors.transparent, height: 0, width: 3.w),
+          Text("Azalan"),
+        ],
+      ),
+    );
+  }
+
+  /* Widget categoryFilterList() {
     return Container(
       alignment: Alignment.centerLeft,
       child: Text("data"),
     );
-  }
+  }*/
 }
