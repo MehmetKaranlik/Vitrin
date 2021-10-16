@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
 import 'AppTheme.dart';
 import 'AppThemeNotifier.dart';
 import 'controllers/AuthController.dart';
@@ -15,11 +14,13 @@ import 'views/AppScreen.dart';
 import 'views/BlockedScreen.dart';
 import 'views/auth/LoginScreen.dart';
 import 'views/auth/OTPVerificationScreen.dart';
+import "package:get_storage/get_storage.dart";
 
 Future<void> main() async {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await GetStorage.init();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) async {

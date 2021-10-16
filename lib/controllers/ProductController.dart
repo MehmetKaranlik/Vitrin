@@ -25,6 +25,7 @@ class ProductController {
 
     try {
       NetworkResponse response = await Network.get(url, headers: headers);
+      print(response);
       MyResponse<List<Product>> myResponse = MyResponse(response.statusCode);
       if (response.statusCode == 200) {
         List<Product> list =

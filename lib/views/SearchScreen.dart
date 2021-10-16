@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:vitrinint/controllers/search_view_drawer_controller.dart';
 import 'package:vitrinint/widgets/sized_place_holder.dart';
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
@@ -102,6 +103,8 @@ class _SearchScreenState extends State<SearchScreen> {
         await ProductController.getFilteredProduct(filter);
 
     if (myResponseProduct.success) {
+      print(ApiUtil.MAIN_API_URL_DEV + ApiUtil.PRODUCTS);
+      print(myResponseProduct.data);
       products = myResponseProduct.data;
     } else {
       if (mounted) {
@@ -134,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _clearFilter() {
     setState(() {
-      filter = Filter();
+      DrawerOptionsController().clearAllData();
     });
   }
 
@@ -280,7 +283,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ? i < priceFilteredProductList.length
             : i < products.length;
         i++) {
-      isSliderActive == true ? print(priceFilteredProductList.length) : null;
       listWidgets.add(
         InkWell(
           onTap: () async {
@@ -574,6 +576,28 @@ class _SearchScreenState extends State<SearchScreen> {
     bool _distanceAscending = false;
     bool _distanceDescending = false;
     double _sliderValue = 0;
+    if (DrawerOptionsController().getSliderValue() != 0 &&
+        DrawerOptionsController().getSliderValue() != null) {
+      _sliderValue = DrawerOptionsController().getSliderValue();
+    }
+    if (DrawerOptionsController().getAscendingPriceValue() == true &&
+        DrawerOptionsController().getAscendingPriceValue() != null) {
+      _princeAscending = DrawerOptionsController().getAscendingPriceValue();
+    }
+    if (DrawerOptionsController().getDescendingPriceValue() == true &&
+        DrawerOptionsController().getDescendingPriceValue() != null) {
+      _princeDescending = DrawerOptionsController().getDescendingPriceValue();
+    }
+    if (DrawerOptionsController().getDescendingDistanceValue() == true &&
+        DrawerOptionsController().getDescendingDistanceValue() != null) {
+      _distanceDescending = DrawerOptionsController().getDescendingPriceValue();
+    }
+    if (DrawerOptionsController().getAscendingDistanceValue() == true &&
+        DrawerOptionsController().getAscendingDistanceValue() != null) {
+      _distanceAscending =
+          DrawerOptionsController().getAscendingDistanceValue();
+    }
+
     return Container(
       width: MediaQuery.of(context).size.width * 0.75,
       color: themeData!.backgroundColor,
@@ -718,38 +742,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
             ),
-
-            // child: ExpansionPanelList(
-            //   expandedHeaderPadding: Spacing.all(0) as EdgeInsets,
-            //   dividerColor: Colors.transparent,
-            //   expansionCallback: (int index, bool isExpanded) {
-            //     setState(() {
-            //       _dataExpansionPanel[index] = !isExpanded;
-            //     });
-            //   },
-            //   animationDuration: Duration(milliseconds: 500),
-            //   children: <ExpansionPanel>[
-            //     ExpansionPanel(
-            //         canTapOnHeader: true,
-            //         headerBuilder: (BuildContext context, bool isExpanded) {
-            //           return ListTile(
-            //             title: Text(Translator.translate("category"),
-            //                 style: AppTheme.getTextStyle(
-            //                     themeData!.textTheme.bodyText1,
-            //                     color: isExpanded
-            //                         ? appdata == null
-            //                             ? Colors.purple
-            //                             : HexColor(appdata!.first.mainColor)
-            //                         : themeData!.colorScheme.onBackground,
-            //                     fontWeight: isExpanded ? 700 : 600)),
-            //           );
-            //         },
-            //         body: Container(
-            //             padding: Spacing.fromLTRB(16, 0, 0, 0),
-            //             child: categoryFilterList()),
-            //         isExpanded: _dataExpansionPanel[0]),
-            //   ],
-            // ),
           ),
           Container(
             margin: Spacing.fromLTRB(20, 8, 20, 0),
@@ -800,6 +792,15 @@ class _SearchScreenState extends State<SearchScreen> {
                           borderRadius: BorderRadius.circular(4),
                         ))),
                     onPressed: () {
+                      DrawerOptionsController().saveSliderValue(_sliderValue);
+                      DrawerOptionsController()
+                          .saveAscendingPriceValue(_princeAscending);
+                      DrawerOptionsController()
+                          .saveDescendingPriceValue(_princeDescending);
+                      DrawerOptionsController()
+                          .saveAscendingDistanceValue(_distanceAscending);
+                      DrawerOptionsController()
+                          .saveDescendingDistanceValue(_distanceDescending);
                       if (_sliderValue != 0) {
                         priceFilteredProductList.clear();
                         _filterPriceFilteredProduct(_sliderValue);
@@ -860,66 +861,4 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Text("data"),
     );
   }
-
-//   Widget categoryFilterList() {
-//     List<Widget> list = [];
-//     for (Category category in categories!) {
-//       if (category.subCategories!.length != 0) {
-//         list.add(Container(
-//             margin: Spacing.left(4),
-//             child: Text(
-//               category.title,
-//               style: TextStyle(fontWeight: FontWeight.bold),
-//             )));
-
-//         List<Widget> subCategoriesWidget = [];
-//         for (SubCategory subCategory in category.subCategories!) {
-//           subCategoriesWidget.add(Container(
-//             child: InkWell(
-//               onTap: () {
-//                 setState(() {
-//                   filter.toggleSubCategory(subCategory.id);
-//                 });
-//               },
-//               child: Row(
-//                 children: <Widget>[
-//                   Checkbox(
-//                     visualDensity: VisualDensity.compact,
-//                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-//                     value: filter.subCategories.contains(subCategory.id),
-//                     activeColor: themeData!.colorScheme.primary,
-//                     onChanged: (bool? value) {
-//                       setState(() {
-//                         filter.toggleSubCategory(subCategory.id);
-//                       });
-//                     },
-//                   ),
-//                   Container(
-//                       margin: Spacing.left(4),
-//                       child: Text(
-//                         subCategory.title,
-//                         style: TextStyle(fontWeight: FontWeight.bold),
-//                       ))
-//                 ],
-//               ),
-//             ),
-//           ));
-//         }
-
-//         list.add(Container(
-//           margin: Spacing.fromLTRB(16, 4, 0, 4),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: subCategoriesWidget,
-//           ),
-//         ));
-//       }
-//     }
-
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: list,
-//     );
-//   }
-// }
 }

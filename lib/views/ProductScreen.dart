@@ -574,7 +574,9 @@ class _ProductScreenState extends State<ProductScreen> {
             ),
             InkWell(
               onTap: () {
-                launchWhatsapp(number: shop?.mobile);
+                launchWhatsapp(
+                  number: shop?.mobile,
+                );
               },
               child: Container(
                 padding:
