@@ -103,7 +103,6 @@ class _SearchScreenState extends State<SearchScreen> {
         await ProductController.getFilteredProduct(filter);
 
     if (myResponseProduct.success) {
-      // print(myResponseProduct.data);
       products = myResponseProduct.data;
     } else {
       if (mounted) {
