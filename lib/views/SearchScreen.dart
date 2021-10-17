@@ -4,8 +4,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:vitrinint/controllers/search_view_drawer_controller.dart';
-import 'package:vitrinint/widgets/sized_place_holder.dart';
+import '../controllers/search_view_drawer_controller.dart';
+import '../widgets/sized_place_holder.dart';
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
 import '../api/api_util.dart';
@@ -18,7 +18,6 @@ import '../models/Filter.dart';
 import '../models/MyResponse.dart';
 import '../models/Product.dart';
 import '../models/Stories.dart';
-import '../models/SubCategory.dart';
 import '../services/AppLocalizations.dart';
 import '../utils/SizeConfig.dart';
 import 'CategoryProductScreen.dart';
@@ -881,11 +880,4 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-
-  /* Widget categoryFilterList() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Text("data"),
-    );
-  }*/
 }

@@ -274,28 +274,6 @@ class _CategoryProductScreenState extends State<CategoryProductScreen> {
                       ),
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       child: Product.getTextFromQuantity(
-                  //           product.quantity,
-                  //           AppTheme.getTextStyle(themeData.textTheme.caption,
-                  //               letterSpacing: 0),
-                  //           themeData,
-                  //           customAppTheme),
-                  //     ),
-                  //     Text(
-                  //       CurrencyApi.getSign(afterSpace: true) +
-                  //           Product.getOfferedPrice(
-                  //               product.price, product.offer)
-                  //               .toString(),
-                  //       style: AppTheme.getTextStyle(
-                  //           themeData.textTheme.bodyText2,
-                  //           fontWeight: 700),
-                  //     )
-                  //   ],
-                  // )
                 ],
               ),
             ),

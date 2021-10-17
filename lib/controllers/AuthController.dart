@@ -396,6 +396,7 @@ class AuthController {
   //------------------------ Get api token -----------------------------------------//
   static Future<String?> getApiToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     return sharedPreferences.getString("token");
   }
 

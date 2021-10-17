@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import '../api/api_util.dart';
-import 'AuthController.dart';
 import '../models/Category.dart';
 import '../models/MyResponse.dart';
 import '../models/Product.dart';
 import '../services/Network.dart';
 import '../utils/InternetUtils.dart';
+import 'AuthController.dart';
 
 class CategoryController {
   //------------------------ Get all categories -----------------------------------------//

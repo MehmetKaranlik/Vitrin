@@ -6,10 +6,23 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AllLanguage {
-  static List<String> supportedLanguages = ['Turkish','English','हिन्दी','中文','Española','français'];
+  static List<String> supportedLanguages = [
+    'Turkish',
+    'English',
+    'हिन्दी',
+    '中文',
+    'Española',
+    'français'
+  ];
 
-  static List<String> supportedLanguagesCode = ['en','tr', 'hi','zh','es','fr'];
-
+  static List<String> supportedLanguagesCode = [
+    'tr',
+    'en',
+    'hi',
+    'zh',
+    'es',
+    'fr'
+  ];
 
   //If you use app localization packages
   static List<Locale> supportedLocales = [

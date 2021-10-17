@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:vitrinint/controllers/search_view_drawer_controller.dart';
 
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
@@ -74,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    DrawerOptionsController().clearAllData();
     super.initState();
     _loadAddresses();
     getAppData();
