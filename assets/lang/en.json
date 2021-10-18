@@ -152,5 +152,9 @@
   "home": "Home",
   "work": "Work",
   "other": "Other",
-  "update_address": "Update Address"
+  "update_address": "Update Address",
+  "sort_by_price" : "Sort by price",
+  "ascending": "Ascending",
+  "descending" : "Descending",
+  "enter_to_shop": "Enter"
 }

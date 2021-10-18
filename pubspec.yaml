@@ -88,6 +88,8 @@ flutter:
     - assets/lang/zh.json
     - assets/lang/es.json
     - assets/lang/fr.json
+    - assets/lang/ru.json
+    - assets/lang/ara.json
 
     #Images
     - assets/images/offer-icon.png

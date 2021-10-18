@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    DrawerOptionsController().clearAllData();
     super.initState();
     _loadAddresses();
     getAppData();
@@ -170,6 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (myResponse.success) {
       stories = myResponse.data![HomeController.stories];
       shops = myResponse.data![HomeController.shops];
+      shops!.sort((a, b) => Geolocator.distanceBetween(
+              a.latitude, a.longitude, position!.latitude, position!.longitude)
+          .compareTo(Geolocator.distanceBetween(b.latitude, b.longitude,
+              position!.latitude, position!.longitude)));
+
       banners = myResponse.data![HomeController.banners];
       categories = myResponse.data![HomeController.categories];
     } else {
@@ -517,7 +521,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )));
       },
       child: Text(
-        "Mağazaya Gir",
+        Translator.translate("enter_to_shop"),
         style: AppTheme.getTextStyle(themeData.textTheme.caption,
             fontWeight: 600, color: Colors.green),
       ),

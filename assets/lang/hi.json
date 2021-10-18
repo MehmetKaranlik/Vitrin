@@ -142,7 +142,11 @@
   "far_from_shop": "दुकान से दूर",
   "you_can_not_order_from_this_location" : "आप इस स्थान से ऑर्डर नहीं दे सकते",
   "you_need_update_application": "आपको अपडेट एप्लिकेशन की आवश्यकता है",
-  "addresses": "पतों"
+  "addresses": "पतों",
+  "sort_by_price" : "Sort by price",
+  "ascending": "Ascending",
+  "descending" : "Descending",
+  "enter_to_shop": "Enter"
 
   
 

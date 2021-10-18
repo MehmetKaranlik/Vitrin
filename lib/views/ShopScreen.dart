@@ -1,12 +1,15 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vitrinint/api/currency_api.dart';
 
 import '../AppTheme.dart';
 import '../AppThemeNotifier.dart';
@@ -382,7 +385,7 @@ class _ShopScreenState extends State<ShopScreen> {
     return Stack(
       children: [
         Container(
-          padding: Spacing.all(16),
+          padding: Spacing.fromLTRB(7, 7, 7, 5),
           margin: Spacing.zero,
           decoration: BoxDecoration(
             color: customAppTheme.bgLayer1,
@@ -397,71 +400,102 @@ class _ShopScreenState extends State<ShopScreen> {
             ],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 child: product.productImages!.length != 0
-                    ? Image.network(
-                        product.productImages![0].url,
-                        loadingBuilder: (BuildContext ctx, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          } else {
-                            return LoadingScreens.getSimpleImageScreen(
-                                context, themeData, customAppTheme,
-                                width: 90, height: 90);
-                          }
-                        },
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        Product.getPlaceholderImage(),
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        fit: BoxFit.fill,
-                      ),
+                    ? _buildProductImage(product)
+                    : _buildProductPlaceHolder(),
               ),
               Spacing.height(2),
-              Text(
-                product.name!,
-                style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
-                    fontWeight: 600, letterSpacing: 0),
-                overflow: TextOverflow.ellipsis,
-              ),
+              _buildProductName(product),
               Spacing.height(3),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      product.productItems!.length.toString() +
-                          " " +
-                          Translator.translate("options"),
-                      style: AppTheme.getTextStyle(
-                          themeData!.textTheme.bodyText2,
-                          fontWeight: 500),
-                    ),
-                  ]),
+              _buildProductBottom(product),
             ],
           ),
         ),
-        Positioned(
-          right: 12,
-          top: 12,
-          child: Icon(
-            product.isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
-            color: product.isFavorite
-                ? appdata == null
-                    ? Colors.purple
-                    : HexColor(appdata!.first.mainColor)
-                : appdata == null
-                    ? Colors.purple
-                    : HexColor(appdata!.first.secondColor),
-            size: 22,
-          ),
-        )
+        _buildFavoriteIcon(product)
       ],
+    );
+  }
+
+  Text _buildProductName(Product product) {
+    return Text(
+      product.name!,
+      style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
+          fontWeight: 600, letterSpacing: 0),
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Row _buildProductBottom(Product product) {
+    return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _buildProductOptions(product),
+          Product.offerTextWidget(
+            originalPrice: product.productItems![0].price.toDouble(),
+            offer: product.offer,
+            fontSize: 13,
+            customAppTheme: customAppTheme,
+            themeData: themeData,
+          ),
+        ]);
+  }
+
+  Positioned _buildFavoriteIcon(Product product) {
+    return Positioned(
+      right: 12,
+      top: 12,
+      child: Icon(
+        product.isFavorite ? MdiIcons.heart : MdiIcons.heartOutline,
+        color: product.isFavorite
+            ? appdata == null
+                ? Colors.purple
+                : HexColor(appdata!.first.mainColor)
+            : appdata == null
+                ? Colors.purple
+                : HexColor(appdata!.first.secondColor),
+        size: 22,
+      ),
+    );
+  }
+
+  Text _buildProductOptions(Product product) {
+    return Text(
+      product.productItems!.length.toString() +
+          " " +
+          Translator.translate("options"),
+      style: AppTheme.getTextStyle(themeData!.textTheme.bodyText2,
+          fontWeight: 500),
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Image _buildProductPlaceHolder() {
+    return Image.asset(
+      Product.getPlaceholderImage(),
+      width: MediaQuery.of(context).size.width * 0.35,
+      height: MediaQuery.of(context).size.width * 0.40,
+      fit: BoxFit.contain,
+    );
+  }
+
+  CachedNetworkImage _buildProductImage(Product product) {
+    return CachedNetworkImage(
+      imageUrl: product.productImages![0].url,
+      placeholder: (ctx, url) => LoadingScreens.getSimpleImageScreen(
+          context, themeData, customAppTheme,
+          width: MediaQuery.of(context).size.width * 0.35,
+          height: MediaQuery.of(context).size.width * 0.40),
+      errorWidget: (ctx, url, error) => Icon(
+        Icons.error,
+        color: Colors.red,
+      ),
+      width: MediaQuery.of(context).size.width * 0.35,
+      height: MediaQuery.of(context).size.width * 0.40,
     );
   }
 }

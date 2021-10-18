@@ -12,7 +12,9 @@ class AllLanguage {
     'हिन्दी',
     '中文',
     'Española',
-    'français'
+    'français',
+    "руска",
+    "عربي"
   ];
 
   static List<String> supportedLanguagesCode = [
@@ -21,7 +23,9 @@ class AllLanguage {
     'hi',
     'zh',
     'es',
-    'fr'
+    'fr',
+    'ru',
+    'ara'
   ];
 
   //If you use app localization packages
@@ -32,6 +36,8 @@ class AllLanguage {
     const Locale('zh', ''),
     const Locale('es', ''),
     const Locale('fr', ''),
+    const Locale('ru', ''),
+    const Locale('ara', ''),
   ];
 
   static Future<void> changeLanguage(String langCode) async {

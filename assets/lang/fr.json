@@ -142,7 +142,11 @@
   "far_from_shop": "Loin du magasin",
   "you_can_not_order_from_this_location" : "Vous ne pouvez pas commander à partir de cet endroit",
   "you_need_update_application": "Vous avez besoin d'une application de mise à jour",
-  "addresses": "Adresses"
+  "addresses": "Adresses",
+  "sort_by_price" : "Trier par prix",
+  "ascending": "grandissant",
+  "descending" : "décroissant",
+  "enter_to_shop": "Trier par prix"
 
 
   
