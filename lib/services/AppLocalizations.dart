@@ -9,33 +9,16 @@ class AllLanguage {
   static List<String> supportedLanguages = [
     'Turkish',
     'English',
-    'हिन्दी',
-    '中文',
-    'Española',
-    'français',
     "руска",
     "عربي"
   ];
 
-  static List<String> supportedLanguagesCode = [
-    'tr',
-    'en',
-    'hi',
-    'zh',
-    'es',
-    'fr',
-    'ru',
-    'ara'
-  ];
+  static List<String> supportedLanguagesCode = ['tr', 'en', 'ru', 'ara'];
 
   //If you use app localization packages
   static List<Locale> supportedLocales = [
     const Locale('tr', ''),
     const Locale('en', ''),
-    const Locale('hi', ''),
-    const Locale('zh', ''),
-    const Locale('es', ''),
-    const Locale('fr', ''),
     const Locale('ru', ''),
     const Locale('ara', ''),
   ];
